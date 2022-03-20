@@ -7,8 +7,6 @@ import SignalCellularAltIcon from "@material-ui/icons/SignalCellularAlt";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import CallIcon from "@material-ui/icons/Call";
 import { Avatar } from "@material-ui/core";
-import MicIcon from "@material-ui/icons/Mic";
-import HeadsetIcon from "@material-ui/icons/Headset";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/reducers/userSlice";
@@ -53,7 +51,7 @@ function Sidebar() {
             <IconButton className="iconBtn">
               <ExpandMoreIcon />
             </IconButton>
-            <h4>Text Channels</h4>
+            <h4 className="siderbar__category">Text Channels</h4>
           </div>
 
           <IconButton className="iconBtn">
@@ -100,13 +98,11 @@ function Sidebar() {
         </div>
         <div className="sidebar__profileIcons">
           <IconButton className="iconBtn">
-            <MicIcon />
-          </IconButton>
-          <IconButton className="iconBtn">
-            <HeadsetIcon />
-          </IconButton>
-          <IconButton className="iconBtn">
-            <ExitToAppIcon onClick={() => auth.signOut()} />
+            <ExitToAppIcon onClick={() => {db.collection('users').doc(user.uid).update({
+              status: 'offline', timestamp: Date.now()
+            }).then(()=>{
+              auth.signOut()
+            })}} />
           </IconButton>
         </div>
       </div>

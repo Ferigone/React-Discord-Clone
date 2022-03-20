@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { setChannelInfo } from "../../store/reducers/appSlice";
 import "./SidebarChannel.css";
+import TagRoundedIcon from '@mui/icons-material/TagRounded';
 
 function SidebarChannel({ id, channelName }) {
     const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function SidebarChannel({ id, channelName }) {
                 )
             }
         >
-            <h5><span className="sidebarChannel__hash">#</span>{channelName}</h5>
+            <h5><TagRoundedIcon className="sidebarChannel__hash" />{channelName}</h5>
         </div>
     );
 }

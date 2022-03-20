@@ -2,8 +2,12 @@
   display: flex;
   flex-direction: column;
   flex: 0.25;
-  height: 100vh;
   background-color: #2f3136;
+  max-width: 240px;
+}
+
+.sidebar__category {
+  white-space: nowrap;
 }
 
 .sidebar__top {
