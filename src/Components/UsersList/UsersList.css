@@ -1,0 +1,63 @@
+.list__container{
+    padding-top: 15px;
+    background-color: #2f3136;
+}
+
+.list__usercard{
+    height:42px;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    margin-left: 8px;
+    min-width: 224px;
+    padding: 0 8px;
+    border-radius: 5px;
+}
+
+.list__usercard:hover{
+    background-color: #36393f;
+    
+}
+
+.list__usercard_photo{
+    border-radius: 50px;
+    height:32px;
+    width:32px;
+    margin-right: 12px;
+}
+
+.list__usercard_username{
+    white-space:nowrap;
+    display:flex;
+    align-items:center;
+    color: white;
+    font-size: 16px;
+    user-select: none;
+}
+
+.list__usercard_photo_container{
+    display: flex;
+    align-items:center;
+    position: relative;
+}
+
+.list__usercard_status{
+    height: 10px;
+    width: 10px;
+    border-radius: 10px;
+    position: absolute;
+    left: 22px;
+    top: 22px;
+    border: solid #2f3136 2px;
+}
+
+.away{
+    background-color: #EA8000;
+
+}
+.online{
+    background-color: #12BC00;
+}
+.offline{
+    background-color: #dcddde;
+}
