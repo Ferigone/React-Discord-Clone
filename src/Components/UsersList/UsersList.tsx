@@ -42,7 +42,7 @@ function UsersList() {
   }, [dispatch]);
 
   return (
-    <div className="list__container">
+    <div className="list__container min-w-[240px]">
       {users?.map((el: any) => (
         <div className="list__usercard">
           <div className="list__usercard_photo_container">

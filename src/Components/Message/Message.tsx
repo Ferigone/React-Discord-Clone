@@ -15,7 +15,7 @@ function Message({
   return (
     <div className="message w-full break-words relative">
       <Avatar src={user.photo} />
-      <div className="message__info">
+      <div className="message__info block break-all">
         <h5>
           {user.displayName}
           <span className="message__timestamp">

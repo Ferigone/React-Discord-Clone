@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 import SidebarChannel from "../SidebarChannel/SidebarChannel";
-import { Avatar } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/reducers/userSlice";
 import db, { auth } from "../../utils/firebase";
@@ -9,11 +8,6 @@ import IconButton from "@material-ui/core/IconButton";
 
 import {
   MdExpandMore,
-  MdAddCircle,
-  MdOutlineSignalCellularAlt,
-  MdInfo,
-  MdCall,
-  MdLogout,
   MdMic,
 } from "react-icons/md";
 
