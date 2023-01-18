@@ -3,8 +3,6 @@ import "./Sidebar.css";
 import SidebarChannel from "../SidebarChannel/SidebarChannel";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/reducers/userSlice";
-import db, { auth } from "../../utils/firebase";
-import IconButton from "@material-ui/core/IconButton";
 
 import {
   MdExpandMore,
@@ -22,23 +20,14 @@ function Sidebar() {
   const [channels, setChannels] = useState([]);
 
   useEffect(() => {
-    db.collection("channels").onSnapshot((snapshot: any) => {
-      setChannels(
-        snapshot.docs.map((doc: any) => ({
-          id: doc.id,
-          channel: doc.data(),
-        }))
-      );
-    });
+    
   }, []);
 
   const handleAddChannel = () => {
     const channelName = prompt("Enter a new channel name");
 
     if (channelName) {
-      db.collection("channels").add({
-        channelName: channelName,
-      });
+      
     }
   };
 
@@ -59,12 +48,10 @@ function Sidebar() {
             </button>
             <h4 className="flex items-center">Channels Category</h4>
           </div>
-          <IconButton className="iconBtn">
             <RiAddFill
               onClick={handleAddChannel}
               className="sidebar__addChannel"
             />
-          </IconButton>
         </div>
 
 
@@ -105,15 +92,7 @@ function Sidebar() {
             <RiSettings5Fill
               className="h-[20px] w-[20px]"
               onClick={() => {
-                db.collection("users")
-                  .doc(user.uid)
-                  .update({
-                    status: "offline",
-                    timestamp: Date.now(),
-                  })
-                  .then(() => {
-                    auth.signOut();
-                  });
+                
               }}
             />
           </button>

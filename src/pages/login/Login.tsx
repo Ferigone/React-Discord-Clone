@@ -1,23 +1,20 @@
-import React from "react";
-import { auth, provider } from "../../utils/firebase";
-
-import { FaDiscord } from "react-icons/fa";
+import Card from "../../Components/LoginCard/Card";
+import LoginQuery from "../../utils/queries/LoginQuery";
 
 function Login() {
-  const signIn = () => {
-    // google login
-    auth.signInWithPopup(provider).catch((error) => alert(error.message));
+  const signIn = async (formEvent: any) => {
+    formEvent.preventDefault();
+    const { email, password } = formEvent.target.elements;
+    const data = await LoginQuery({
+      email: email.value,
+      password: password.value,
+    });
+    console.log(data);
   };
 
   return (
-    <div className="flex w-full justify-center items-center flex-col">
-        <div className="flex justify-center">
-          <FaDiscord className="fill-blue-300 h-16 w-16"/>
-        </div>
-
-        <button onClick={signIn} className="bg-blue-500 hover:bg-blue-400 rounded-[5px] px-5 py-2 text-white">
-          Sign In With Google
-        </button>
+    <div className="flex w-full justify-center items-center flex-col h-screen bg-dark-blue">
+      <Card onSubmit={signIn} />
     </div>
   );
 }

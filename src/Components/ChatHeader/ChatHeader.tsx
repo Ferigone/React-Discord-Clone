@@ -1,6 +1,5 @@
 import React from "react";
 import "./ChatHeader.css";
-import { IconButton, Input } from "@material-ui/core";
 
 import {IoMdNotifications, IoMdPeople, IoMdSearch, IoMdHelpCircle} from 'react-icons/io'
 import {MdEditLocationAlt, MdInbox} from 'react-icons/md'
@@ -15,27 +14,10 @@ function ChatHeader({ channelName }: {channelName: string}) {
         </h4>
       </div>
       <div className="chatHeader__right">
-        <IconButton>
-          <IoMdNotifications />
-        </IconButton>
-        <IconButton>
-          <MdEditLocationAlt />
-        </IconButton>
-        <IconButton>
-          <IoMdPeople />
-        </IconButton>
 
         <div className="chatHeader__search">
-          <Input placeholder="search" className="chatHeader__search" />
-          <IoMdSearch />
+          <input type="text" placeholder="Search" />
         </div>
-
-        <IconButton>
-          <MdInbox />
-        </IconButton>
-        <IconButton>
-          <IoMdHelpCircle />
-        </IconButton>
       </div>
     </div>
   );

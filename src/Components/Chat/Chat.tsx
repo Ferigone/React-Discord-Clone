@@ -8,7 +8,6 @@ import {
   selectChannelName,
 } from "../../store/reducers/appSlice";
 import { selectUser } from "../../store/reducers/userSlice";
-import db from "../../utils/firebase";
 
 import { IoMdAddCircle } from "react-icons/io";
 import { AiFillGift, AiOutlineGif } from "react-icons/ai";
@@ -27,26 +26,14 @@ function Chat() {
 
   useEffect(() => {
     if (channelId) {
-      db.collection("channels")
-        .doc(channelId)
-        .collection("messages")
-        .orderBy("timestamp", "desc")
-        .onSnapshot(
-          (snapshot: any) =>
-            setMessages(snapshot.docs.map((doc: any) => doc.data())),
-          elementRef.current.scrollIntoView()
-        );
+      
     }
   }, [channelId]);
 
   const sendMessage = (e: any) => {
     e.preventDefault();
 
-    db.collection("channels").doc(channelId).collection("messages").add({
-      timestamp: Date.now(),
-      message: input,
-      user: user,
-    });
+    
 
     setInput("");
   };

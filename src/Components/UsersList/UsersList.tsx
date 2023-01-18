@@ -9,36 +9,12 @@ import {
   selectUsers,
 } from "../../store/reducers/onlineUsersSlice";
 
-import db from "../../utils/firebase";
-
 function UsersList() {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
 
   useEffect(() => {
-    db.collection("users")
-      .get()
-      .then((querySnapshot: any) => {
-        let users: Array<any> = [];
-        querySnapshot.forEach((doc: any) => {
-          users.push(doc.data());
-        });
-        dispatch(initUsers(users));
-      });
-    db.collection("users").onSnapshot((querySnapshot: any) => {
-      querySnapshot.docChanges().forEach((change: any) => {
-        if (change.type === "added") {
-          // change.doc.data() Add User
-        }
-        if (change.type === "modified") {
-          dispatch(modifyUser(change.doc.data()));
-          //Change user data
-        }
-        if (change.type === "removed") {
-          console.log("Removed city: ", change.doc.data());
-        }
-      });
-    });
+    
   }, [dispatch]);
 
   return (

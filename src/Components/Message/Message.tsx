@@ -1,4 +1,4 @@
-import { Avatar } from "@material-ui/core";
+
 import React from "react";
 import "./Message.css";
 import moment from "moment";
@@ -14,7 +14,7 @@ function Message({
 }) {
   return (
     <div className="message w-full break-words relative">
-      <Avatar src={user.photo} />
+      <img src={user.photo} />
       <div className="message__info block break-all">
         <h5>
           {user.displayName}

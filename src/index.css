@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @layer components {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -13,4 +15,18 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+}
+
+*{
+  font: 'gg sans', sans-serif;
+}
+
+/* Define color palette */
+:root {
+  --blue: #7289da;
+  --white: #fff;
+  --light-gray: #99aab5;
+  --gray: #2c2f33;
+  --dark-gray: #23272a;
+  --black: #000;
 }

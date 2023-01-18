@@ -9,7 +9,7 @@ export const usersSlice = createSlice({
     },
     addUser: (state, { payload }) => {
       let tempState: any = state;
-      tempState = [...tempState, payload]
+      tempState = [...tempState, payload];
       return (state = tempState);
     },
     modifyUser: (state, { payload }) => {
