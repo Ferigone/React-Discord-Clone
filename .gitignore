@@ -4,6 +4,7 @@
 /api/node_modules
 /api/.pnp
 /api/.env
+/api/dist
 
 
 /node_modules

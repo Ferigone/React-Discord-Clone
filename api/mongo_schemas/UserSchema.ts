@@ -14,11 +14,22 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    tokens: {
+        type: Array,
+    },
+    permissions: {
+        type: Array,
+        default: ["CREATE_SERVER", "CREATE_CHANNEL"],
+    },
     discriminator: String,
     avatar: String,
     mfa_enabled: Boolean,
     locale: String,
-    verified: Boolean,
+    status: String,
+    verified: {
+        type: Boolean,
+        default: false,
+    },
     flags: Number,
 });
 

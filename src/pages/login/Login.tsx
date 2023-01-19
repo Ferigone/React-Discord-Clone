@@ -1,7 +1,16 @@
+import { useDispatch, useSelector } from 'react-redux';
 import Card from "../../Components/LoginCard/Card";
 import LoginQuery from "../../utils/queries/LoginQuery";
+import React from 'react';
+
+import { login, selectToken } from '../../store/reducers/userSlice'
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const navigate = useNavigate();
+
   const signIn = async (formEvent: any) => {
     formEvent.preventDefault();
     const { email, password } = formEvent.target.elements;
@@ -9,8 +18,18 @@ function Login() {
       email: email.value,
       password: password.value,
     });
-    console.log(data);
+
+    if (data.token) {
+      dispatch(login(data.token));
+      navigate('/');
+    }
   };
+
+  React.useEffect(() => {
+    if(token){
+      navigate('/');
+    }
+  }, [])
 
   return (
     <div className="flex w-full justify-center items-center flex-col h-screen bg-dark-blue">

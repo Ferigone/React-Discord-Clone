@@ -3,7 +3,13 @@ type LoginParams = {
   password: string;
 };
 
-const useLogin = (params: LoginParams) => {
+type LoginResponse = {
+  token?: string;
+  message?: string;
+  status?: string;
+};
+
+const useLogin = (params: LoginParams): Promise<LoginResponse> => {
   return new Promise((resolve, reject) => {
     return fetch(process.env.REACT_APP_API_URL + "/login", {
       method: "POST",

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 import SidebarChannel from "../SidebarChannel/SidebarChannel";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../store/reducers/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { logout, selectUser } from "../../store/reducers/userSlice";
 
 import {
   MdExpandMore,
-  MdMic,
 } from "react-icons/md";
 
-import { BsHeadphones } from "react-icons/bs";
+import { TbLogout } from "react-icons/tb";
 
 import { RiSettings5Fill, RiAddFill } from "react-icons/ri";
 
@@ -18,16 +17,17 @@ import { RiSettings5Fill, RiAddFill } from "react-icons/ri";
 function Sidebar() {
   const user = useSelector(selectUser);
   const [channels, setChannels] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    
+
   }, []);
 
   const handleAddChannel = () => {
     const channelName = prompt("Enter a new channel name");
 
     if (channelName) {
-      
+
     }
   };
 
@@ -48,10 +48,10 @@ function Sidebar() {
             </button>
             <h4 className="flex items-center">Channels Category</h4>
           </div>
-            <RiAddFill
-              onClick={handleAddChannel}
-              className="sidebar__addChannel"
-            />
+          <RiAddFill
+            onClick={handleAddChannel}
+            className="sidebar__addChannel"
+          />
         </div>
 
 
@@ -68,31 +68,33 @@ function Sidebar() {
       <div className="h-[53px] flex flex-row items-center justify-between px-[8px] bg-[#292B2F]">
         <div className="flex flex-row items-center">
           <img
-            src={user.photo}
+            src={user?.photo}
             className="h-[32px] w-[32px] rounded-3xl mr-2"
             alt=""
           />
           <div className="flex flex-col cursor-pointer">
             <span className="text-white font-bold text-[14px]">
-              {"Ferigone"}
+              {user?.username}
             </span>
             <span className="text-[#8b919b] text-[12px] font-semibold mt-[-3px]">
-              #{user.uid.substring(0, 6).toUpperCase()}
+              #{user?.id.substring(0, 6).toUpperCase()}
             </span>
           </div>
         </div>
         <div className="flex flex-row items-center text-[#B9BBBE]">
           <button className="h-[32px] w-[32px] flex justify-center items-center hover:bg-[#36393f] rounded-[5px]">
-            <MdMic className="h-[20px] w-[20px]" />
-          </button>
-          <button className="h-[32px] w-[32px] flex justify-center items-center hover:bg-[#36393f] rounded-[5px]">
-            <BsHeadphones className="h-[20px] w-[20px]" />
-          </button>
-          <button className="h-[32px] w-[32px] flex justify-center items-center hover:bg-[#36393f] rounded-[5px]">
             <RiSettings5Fill
               className="h-[20px] w-[20px]"
               onClick={() => {
-                
+
+              }}
+            />
+          </button>
+          <button className="h-[32px] w-[32px] flex justify-center items-center hover:bg-[#36393f] rounded-[5px]">
+            <TbLogout
+              className="h-[20px] w-[20px]"
+              onClick={() => {
+                dispatch(logout());
               }}
             />
           </button>

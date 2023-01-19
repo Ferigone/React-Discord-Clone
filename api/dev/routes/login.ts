@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserSchema from "../../mongo_schemas/UserSchema";
 import { verify } from "argon2";
+import AuthTokenManager from "../utils/AuthTokenManager";
 
 const router = Router();
 
@@ -18,11 +19,21 @@ router.post("/", async (req, res) => {
 
   try {
     if (await verify(user.password, password)) {
-      return res.json({ message: "Login successful" });
+      const token = await AuthTokenManager.generateToken(
+        { id: user.id },
+        process.env.JWT_SECRET || ""
+      );
+
+      // Add token to user document and save
+      user.tokens.push(token);
+      await user.save();
+
+      return res.json({ token });
     } else {
-      return res.status(400).json({ message: "Incorrect password" });
+      return res.status(401).json({ message: "Incorrect password" });
     }
   } catch (err) {
+    console.log(err)
     return res.status(500).json({ message: "Internal server error" });
   }
 });
