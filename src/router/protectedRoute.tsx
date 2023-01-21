@@ -1,8 +1,10 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken, setUserData } from "../store/reducers/userSlice";
+import { logout, selectToken, setUserData } from "../store/reducers/userSlice";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { io } from "socket.io-client";
+import { socket, SocketContext } from "../context/socket";
 
 const ProtectedRoute = ({ children }: any) => {
   const token = useSelector(selectToken);
@@ -10,7 +12,7 @@ const ProtectedRoute = ({ children }: any) => {
   const navigate = useNavigate();
 
   if (!token) {
-   navigate("/login");
+    navigate("/login");
   }
 
   const { isLoading, isError, data, error } = useQuery({
@@ -25,17 +27,25 @@ const ProtectedRoute = ({ children }: any) => {
       }).then((res) => res.json()),
   });
 
-  if(isLoading) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>
 
-  if(data){
+  if (data) {
     dispatch(setUserData(data.user))
+    socket.auth = { token }
+    socket.connect().on('connect_error',(e)=>{
+      if(e.message === '401'){
+        dispatch(logout())
+      }
+    })
   }
 
 
 
   return (
     <React.Fragment>
-      {children}
+      <SocketContext.Provider value={socket}>
+        {children}
+      </SocketContext.Provider>
     </React.Fragment>
   );
 };

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import UserSchema from "../../mongo_schemas/UserSchema";
 import { verify } from "argon2";
-import AuthTokenManager from "../utils/AuthTokenManager";
+import AuthTokenManager from "../../tools/AuthTokenManager";
 
 const router = Router();
 

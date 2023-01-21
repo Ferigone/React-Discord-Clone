@@ -1,6 +1,6 @@
 // Create class to manage auth tokens using JWT
 import * as jwt from "jsonwebtoken";
-import UserSchema from "../../mongo_schemas/UserSchema";
+import UserSchema from "../mongo_schemas/UserSchema";
 
 class AuthTokenManager {
   private static instance: AuthTokenManager;
