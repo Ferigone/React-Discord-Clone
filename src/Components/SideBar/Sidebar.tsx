@@ -11,12 +11,13 @@ import {
 import { TbLogout } from "react-icons/tb";
 
 import { RiSettings5Fill, RiAddFill } from "react-icons/ri";
+import { selectServer } from "../../store/reducers/serverSlice";
 
 
 
 function Sidebar() {
   const user = useSelector(selectUser);
-  const [channels, setChannels] = useState([]);
+  const server = useSelector(selectServer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function Sidebar() {
   return (
     <div className="flex flex-col bg-[#2f3136] min-w-[240px] w-[240px]">
       <div className="flex flex-row justify-between items-center px-[16px] h-[52px] text-white border-b-[1px] border-b-black cursor-pointer hover:bg-[#36393fc9] duration-100">
-        <h4 className="font-semibold">SiecMC.PL</h4>
+        <h4 className="font-semibold">{server.name}</h4>
         <MdExpandMore className="w-6 h-6" />
       </div>
 
@@ -56,7 +57,7 @@ function Sidebar() {
 
 
         <div className="sidebar__channelslist">
-          {channels.map(({ id, channel }: { id: string; channel: any }) => (
+          {server.channels.map(({ id, channel }: { id: string; channel: any }) => (
             <SidebarChannel
               key={id}
               id={id}
