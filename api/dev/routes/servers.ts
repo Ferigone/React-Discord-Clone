@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
   await server.save();
 
 
-  return res.json({ message: "Server created successfully" });
+  return res.json({ message: "Server created successfully", server_id: server._id.toString() });
 });
 
 router.get('/', async (req, res) => {

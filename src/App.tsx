@@ -14,10 +14,10 @@ function App() {
   const token = useSelector(selectToken);
 
   document.onvisibilitychange = () => {
-    if (user.uid) {
-      let status = document.visibilityState === "visible" ? "online" : "away";
+    // if (user.uid) {
+    //   let status = document.visibilityState === "visible" ? "online" : "away";
 
-    }
+    // }
   };
 
   useEffect(() => {
@@ -28,12 +28,8 @@ function App() {
     <div className="flex flex-row h-screen">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
-            <ProtectedRoute>
-              <ServersList />
-              <Sidebar />
-              <Chat />
-            </ProtectedRoute>
+          <Route path="/app/*" element={
+            <ProtectedRoute />
           } />
           <Route path="/login" element={<Login />} />
         </Routes>

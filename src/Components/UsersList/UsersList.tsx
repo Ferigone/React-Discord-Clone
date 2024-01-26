@@ -1,37 +1,32 @@
+import { User } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectUsers } from "../../store/reducers/serverSlice";
 
 import "./UsersList.css";
-
-import {
-  initUsers,
-  modifyUser,
-  selectUsers,
-} from "../../store/reducers/onlineUsersSlice";
 
 function UsersList() {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
 
-  useEffect(() => {
-    
-  }, [dispatch]);
 
   return (
     <div className="list__container min-w-[240px]">
       {users?.map((el: any) => (
-        <div className="list__usercard">
-          <div className="list__usercard_photo_container">
-            <img
-              className="list__usercard_photo"
-              src={el.userData.photo}
-              alt=""
-            />
-            <span className={`list__usercard_status ${el.status}`} />
-          </div>
-          <span className="list__usercard_username">
-            {el.userData.username}
-          </span>
+        <div className="hover:bg-[#36393f] ml-2 rounded-md flex items-center py-2 font-semibold">
+          <User
+            bordered
+            color="success"
+            size="md"
+            src={`https://via.placeholder.com/150/000000/FFFFFF/?text=${el.username[0]}`}
+            name={
+              <span className="font-semibold text-[15px]">
+                {el.username}
+              </span>
+            }
+            description={`#${el.id.slice(0, 6).toUpperCase()}`}
+            className="font-semibold"
+          />
         </div>
       ))}
     </div>

@@ -14,10 +14,6 @@ function ChatHeader({ channelName }: {channelName: string}) {
         </h4>
       </div>
       <div className="chatHeader__right">
-
-        <div className="chatHeader__search">
-          <input type="text" placeholder="Search" />
-        </div>
       </div>
     </div>
   );

@@ -8,27 +8,44 @@ import {
   MdExpandMore,
 } from "react-icons/md";
 
+import { Collapse, Text, Button } from "@nextui-org/react";
 import { TbLogout } from "react-icons/tb";
 
 import { RiSettings5Fill, RiAddFill } from "react-icons/ri";
-import { selectServer } from "../../store/reducers/serverSlice";
+import { selectChannels, selectServer, setServerChannels } from "../../store/reducers/serverSlice";
+import CreateChannel from "../../utils/queries/CreateChannel";
+import NewChannelModal from "../Modals/NewChannelModal";
+import GetChannels from "../../utils/queries/GetChannels";
+import { useQuery } from "@tanstack/react-query";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 
 function Sidebar() {
   const user = useSelector(selectUser);
   const server = useSelector(selectServer);
+  const channels = useSelector(selectChannels)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  const params = useParams();
 
-  }, []);
+  const [addChannelModalState, setAddChannelModalState] = useState(false);
+  useQuery({
+    queryKey: ['channels', server._id], queryFn: () => {
+      GetChannels(server._id).then(data => {
+        dispatch(setServerChannels(data))
+      })
+      return channels;
+    }, refetchOnWindowFocus: false, enabled: !!server._id
+  });
 
-  const handleAddChannel = () => {
-    const channelName = prompt("Enter a new channel name");
-
-    if (channelName) {
-
+  const handleAddChannel = (name: string) => {
+    if (name) {
+      CreateChannel({
+        server_id: server._id,
+        name,
+      })
     }
   };
 
@@ -41,30 +58,23 @@ function Sidebar() {
 
       <div className="sidebar__channels">
 
+        <div className="w-full px-3 my-5">
+          <Button shadow color="gradient" size="sm" className="w-full" onPress={() => {
+            setAddChannelModalState(true)
+          }}>Create Channel</Button>
+        </div>
 
-        <div className="flex row items-center justify-between">
-          <div className="flex row items-center justify-center text-[gray] hover:text-gray-300 cursor-pointer">
-            <button className="mx-1">
-              <MdExpandMore />
-            </button>
-            <h4 className="flex items-center">Channels Category</h4>
+        <Collapse.Group>
+          <div className="sidebar__channelslist">
+            {channels?.map(({ _id, name }: { _id: string; name: string }) => (
+              <SidebarChannel
+                key={_id}
+                id={_id}
+                channelName={name}
+              />
+            ))}
           </div>
-          <RiAddFill
-            onClick={handleAddChannel}
-            className="sidebar__addChannel"
-          />
-        </div>
-
-
-        <div className="sidebar__channelslist">
-          {server.channels.map(({ id, channel }: { id: string; channel: any }) => (
-            <SidebarChannel
-              key={id}
-              id={id}
-              channelName={channel.channelName}
-            />
-          ))}
-        </div>
+        </Collapse.Group>
       </div>
       <div className="h-[53px] flex flex-row items-center justify-between px-[8px] bg-[#292B2F]">
         <div className="flex flex-row items-center">
@@ -87,7 +97,7 @@ function Sidebar() {
             <RiSettings5Fill
               className="h-[20px] w-[20px]"
               onClick={() => {
-
+                navigate('/app/settings');
               }}
             />
           </button>
@@ -101,6 +111,13 @@ function Sidebar() {
           </button>
         </div>
       </div>
+
+      <NewChannelModal
+        visible={addChannelModalState}
+        setVisible={setAddChannelModalState}
+        title="Create Channel"
+        addChannel={handleAddChannel}
+      />
     </div>
   );
 }

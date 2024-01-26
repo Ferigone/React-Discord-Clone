@@ -5,7 +5,7 @@ import UserSchema from "../../mongo_schemas/UserSchema";
 const router = Router();
 
 router.post("/", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
 
   if (!email) return res.status(400).json({ message: "Email is required" });
 
@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
 
   try {
     const hashedPassword = await hash(password);
-    const newUser = new UserSchema({ email, password: hashedPassword });
+    const newUser = new UserSchema({ email, password: hashedPassword, username });
     await newUser.save();
     return res.json({ message: "User created successfully" });
   } catch (err) {

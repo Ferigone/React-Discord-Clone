@@ -1,18 +1,42 @@
 import {Schema, model} from "mongoose";
+import { ObjectId } from 'mongodb';
 
 const ChannelSchema = new Schema({
-    id: String,
-    name: String,
-    type: String,
-    nsfw: Boolean,
-    user_limit: Number,
-    parent_id: String,
-    member_count: Number,
+    name: {
+        type: String,
+        required: true,
+    },
+    type: {
+        type: String,
+        default: "text",
+    },
+    nsfw: {
+        type: Boolean,
+        default: false,
+    },
+    user_limit: {
+        type: Number,
+        default: 0,
+    },
+    server_id: {
+        type: ObjectId,
+        required: true,
+    },
+    parent_id: {
+        type: ObjectId,
+        default: null,
+    },
+    member_count: {
+        type: Number,
+        default: 0,
+    },
     permissions: {
         type: Array,
+        default: [],
     },
     messages: {
         type: Array,
+        default: [],
     },
 });
 

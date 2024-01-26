@@ -26,7 +26,7 @@ function Login() {
   };
 
   React.useEffect(() => {
-    if(token){
+    if (token) {
       navigate('/');
     }
   }, [])
@@ -34,6 +34,20 @@ function Login() {
   return (
     <div className="flex w-full justify-center items-center flex-col h-screen bg-dark-blue">
       <Card onSubmit={signIn} />
+      <div className="area" >
+        <ul className="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div >
     </div>
   );
 }
