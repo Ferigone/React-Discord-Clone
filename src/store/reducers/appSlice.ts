@@ -12,6 +12,7 @@ export const appSlice = createSlice({
     lastSelectedServer: localStorage.getItem("lastSelectedServer")
       ? JSON.parse(localStorage.getItem("lastSelectedServer") || "")
       : null,
+      messagesCountOnLoadPerChannel: localStorage.getItem("messagesCountOnLoadPerChannel") ? JSON.parse(localStorage.getItem("messagesCountOnLoadPerChannel") || "") : [],
   },
   reducers: {
     setChannelInfo: (state, action) => {
@@ -55,10 +56,31 @@ export const appSlice = createSlice({
         JSON.stringify(state.lastSelectedServer)
       );
     },
+
+    setMessagesCountOnLoadPerChannel: (state, action) => {
+      const { channel_id, messagesCountOnLoad } = action.payload;
+
+      if (channel_id === null) {
+        return;
+      }
+      const index = state.messagesCountOnLoadPerChannel.findIndex(
+        (item: any) => item.channel_id === channel_id
+      );
+      if (index !== -1) {
+        state.messagesCountOnLoadPerChannel[index] = { channel_id, messagesCountOnLoad };
+      } else {
+        state.messagesCountOnLoadPerChannel.push({ channel_id, messagesCountOnLoad });
+      }
+
+      localStorage.setItem(
+        "messagesCountOnLoadPerChannel",
+        JSON.stringify(state.messagesCountOnLoadPerChannel)
+      );
+    },
   },
 });
 
-export const { setChannelInfo, setAllDataLoaded, setLastSelectedChannel, setLastSelectedServer } =
+export const { setChannelInfo, setAllDataLoaded, setLastSelectedChannel, setLastSelectedServer, setMessagesCountOnLoadPerChannel } =
   appSlice.actions;
 
 export const selectChannelId = (state: any) => state.app.channelId;
@@ -67,5 +89,6 @@ export const selectAllDataLoaded = (state: any) => state.app.allDataLoaded;
 export const selectLastSelectedChannels = (state: any) =>
   state.app.lastSelectedChannels;
 export const selectLastSelectedServer = (state: any) => state.app.lastSelectedServer;
+export const selectMessagesCountOnLoadPerChannel = (state: any) => state.app.messagesCountOnLoadPerChannel;
 
 export default appSlice.reducer;

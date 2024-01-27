@@ -30,9 +30,13 @@ import GetMessages from "../../utils/queries/GetMessages";
 import { selectChannels, selectServer } from "../../store/reducers/serverSlice";
 import {
   selectLastSelectedChannels,
+  selectMessagesCountOnLoadPerChannel,
   setLastSelectedChannel,
   setLastSelectedServer,
+  setMessagesCountOnLoadPerChannel,
 } from "../../store/reducers/appSlice";
+import MessageSkeleton from "../Skeletons/Message";
+import NoChannelContent from "../NoChannelContent/NoChannelContent";
 
 function Chat() {
   const elementRef: any = useRef(null);
@@ -83,7 +87,7 @@ function Chat() {
     }
   };
 
-  const { isLoading, error, data, refetch } = useQuery({
+  const { isLoading, isPending, isSuccess, error, data, refetch } = useQuery({
     queryKey: ["messages", channel._id],
     queryFn: () => {
       GetMessages(channel._id, calculateIndex()).then((res: any) => {
@@ -113,7 +117,6 @@ function Chat() {
         let res: any = await SendMessage(input, params.channel_id || "");
         if (!res?.error) {
           setInput("");
-          refetch();
         }
       }
     }
@@ -121,6 +124,7 @@ function Chat() {
 
   React.useEffect(() => {
     socket.emit("joinChannel", params.channel_id);
+    
     setMessageIndex(0);
 
     dispatch(
@@ -133,13 +137,16 @@ function Chat() {
     return () => {
       socket.emit("leaveChannel", params.channel_id);
     };
-  }, [params.channel_id]);
-
+  }, [params.channel_id, channel._id]);
 
   React.useEffect(() => {
     socket.on("message", (newMessage: any) => {
       dispatch(addNewMessage(newMessage));
     });
+
+    return () => {
+      socket.off("message");
+    }
   }, []);
 
   React.useEffect(() => {
@@ -149,7 +156,7 @@ function Chat() {
   }, [isElementVisible]);
 
   React.useEffect(() => {
-    if (!params.channel_id && channels.length > 0 && server?._id) {
+    if (!params.channel_id && channels.length > 0 && params?.server_id) {
       const lastSelectedChannel = lastSelectedChannels.find(
         (el: any) => el.server_id === server._id
       );
@@ -174,12 +181,24 @@ function Chat() {
                   message={message.content}
                 />
               ))}
-              <div
-                ref={elementRef}
-                className="flex justify-center items-center h-12"
-              >
-                {isLoading && <CircularProgress size="md" />}
-              </div>
+              {(isLoading || (isPending && !data)) && (
+                <>
+                  {Array(1)
+                    .fill(0)
+                    .map((_, i) => (
+                      <MessageSkeleton key={i} />
+                    ))}
+                </>
+              )}
+              {(messages.length % 50 === 0 && messages.length > 0) && (
+                <div ref={elementRef}>
+                  <MessageSkeleton />
+                </div>
+              )}
+              
+              {(messages.length === 0 && isSuccess) && (
+                <NoChannelContent />
+              )}
             </div>
             <div className="chat__input text-gray-400 flex justify-between p-1.5 rounded-md mx-5 mb-5">
               <div className="mx-1 w-full">

@@ -69,6 +69,7 @@ const ProtectedRoute = ({ children }: any) => {
   }
 
   React.useEffect(() => {
+    console.log(params)
     let server: any = serverData;
     if(server?._id) {
       dispatch(
@@ -78,7 +79,7 @@ const ProtectedRoute = ({ children }: any) => {
       );
     }
 
-    if(lastSelectedServer?.server_id && !serverID) {
+    if(lastSelectedServer?.server_id && !serverID && window.location.pathname !== '/app/settings') {
       navigate('/app/server/' + lastSelectedServer.server_id)
     }
   }, [serverData])
