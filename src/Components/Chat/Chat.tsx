@@ -1,15 +1,25 @@
-import React, { useContext, useRef, useState } from "react";
-// import "./Chat.css";
-import ChatHeader from "../ChatHeader/ChatHeader";
-import Message from "../Message/Message";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { redirect, useNavigate, useParams } from "react-router-dom";
-
-import { IoMdAddCircle, IoMdSend } from "react-icons/io";
+import { useNavigate, useParams } from "react-router-dom";
+import { IoMdAddCircle } from "react-icons/io";
 import { AiFillGift, AiOutlineGif } from "react-icons/ai";
 import { MdEmojiEmotions } from "react-icons/md";
+import { Textarea } from "@nextui-org/react";
+import { useQuery } from "@tanstack/react-query";
 
+import ChatHeader from "../ChatHeader/ChatHeader";
+import Message from "../Message/Message";
 import UsersList from "../UsersList/UsersList";
+import MessageSkeleton from "../Skeletons/Message";
+import NoChannelContent from "../NoChannelContent/NoChannelContent";
+
+import SendMessage from "../../utils/queries/SendMessage";
+import GetChannelInfo from "../../utils/queries/GetChannelInfo";
+import GetMessages from "../../utils/queries/GetMessages";
+
+import { SocketContext } from "../../context/socket";
+import { useIsVisible } from "../../hooks/useIsElementVisible";
+
 import {
   addMessages,
   addNewMessage,
@@ -19,152 +29,119 @@ import {
   setChannelInfo,
   setMessages,
 } from "../../store/reducers/channelSlice";
-import { Button, CircularProgress, Textarea } from "@nextui-org/react";
-import SendMessage from "../../utils/queries/SendMessage";
-import { SocketContext } from "../../context/socket";
-import { useIsVisible } from "../../hooks/useIsElementVisible";
-import { useQuery } from "@tanstack/react-query";
-import Scrollbars from "react-custom-scrollbars-2";
-import GetChannelInfo from "../../utils/queries/GetChannelInfo";
-import GetMessages from "../../utils/queries/GetMessages";
-import { selectChannels, selectServer } from "../../store/reducers/serverSlice";
+import {
+  selectChannels,
+  selectServer,
+} from "../../store/reducers/serverSlice";
 import {
   selectLastSelectedChannels,
-  selectMessagesCountOnLoadPerChannel,
-  setLastSelectedChannel,
-  setLastSelectedServer,
-  setMessagesCountOnLoadPerChannel,
 } from "../../store/reducers/appSlice";
-import MessageSkeleton from "../Skeletons/Message";
-import NoChannelContent from "../NoChannelContent/NoChannelContent";
 
 function Chat() {
-  const elementRef: any = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const params = useParams();
+  const socket = useContext(SocketContext);
+
   const channelName = useSelector(selectChannelName);
   const messages = useSelector(selectMessages);
   const channel = useSelector(selectChannel);
   const channels = useSelector(selectChannels);
   const server = useSelector(selectServer);
-  const socket = useContext(SocketContext);
-  const dispatch = useDispatch();
-
   const lastSelectedChannels = useSelector(selectLastSelectedChannels);
 
-  const token = localStorage.getItem("token");
-  const [top, setTop] = useState(0);
-
-  const params = useParams();
-  const navigate = useNavigate();
-
   const [input, setInput] = useState("");
-  const [messageIndex, setMessageIndex] = useState(0);
-
-  const textAreaRef: any = useRef();
-
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const elementRef = useRef<HTMLDivElement>(null);
+  
   const isElementVisible = useIsVisible(elementRef);
 
-  const {
-    isLoading: isLoadingChannel,
-    error: errorChannel,
-    data: dataChannel,
-  } = useQuery({
+  // Fetch channel info
+  const { isLoading: isLoadingChannel } = useQuery({
     queryKey: ["channel", params.channel_id],
-    queryFn: () => {
-      return GetChannelInfo(params.channel_id || "").then((data: any) => {
-        dispatch(setChannelInfo(data));
-        return data;
-      });
+    queryFn: async () => {
+      if (!params.channel_id) return;
+      const data = await GetChannelInfo(params.channel_id);
+      dispatch(setChannelInfo(data));
+      return data;
     },
     enabled: !!params.channel_id,
     refetchOnWindowFocus: false,
   });
 
-  const calculateIndex = () => {
-    if (messages.length < 50) {
-      return 0;
-    } else if (messages.length >= 50) {
-      return messages.length;
-    }
-  };
-
-  const { isLoading, isPending, isSuccess, error, data, refetch } = useQuery({
+  // Fetch messages
+  const { isLoading, isPending, data, isSuccess, refetch: refetchMessages } = useQuery({
     queryKey: ["messages", channel._id],
-    queryFn: () => {
-      GetMessages(channel._id, calculateIndex()).then((res: any) => {
-        console.log(messageIndex);
-        if (res) {
-          if (messages.length) {
-            dispatch(addMessages(res));
-          } else {
-            dispatch(setMessages(res));
-          }
-        }
-        return res;
-      });
+    queryFn: async () => {
+      if (!channel._id) return;
+      const newMessages = await GetMessages(channel._id, messages.length);
+      if (messages.length) {
+        dispatch(addMessages(newMessages));
+      } else {
+        dispatch(setMessages(newMessages));
+      }
+      return newMessages;
     },
     enabled: !!channel._id,
     retry: false,
     refetchOnWindowFocus: false,
   });
 
-  const handleKeyPress = async (e: any) => {
-    if (e.key === "Enter" && e.shiftKey) {
-      return;
-    }
-    if (e.key === "Enter") {
-      e.preventDefault();
-      if (input) {
-        let res: any = await SendMessage(input, params.channel_id || "");
-        if (!res?.error) {
-          setInput("");
-        }
-      }
+  // Send message
+  const handleSendMessage = async () => {
+    if (!input.trim()) return;
+    const res = await SendMessage(input, params.channel_id || "") as any;
+    if (!res?.error) {
+      setInput("");
     }
   };
 
-  React.useEffect(() => {
-    socket.emit("joinChannel", params.channel_id);
-    
-    setMessageIndex(0);
+  // Handle key press
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
 
-    dispatch(
-      setLastSelectedChannel({
-        channel_id: channel._id,
-        server_id: channel.server_id,
-      })
-    );
-
+  useEffect(() => {
+    if (params.channel_id) {
+      socket.emit("joinChannel", params.channel_id);
+    }
     return () => {
-      socket.emit("leaveChannel", params.channel_id);
+      if (params.channel_id) {
+        socket.emit("leaveChannel", params.channel_id);
+      }
     };
-  }, [params.channel_id, channel._id]);
+  }, [params.channel_id, socket]);
 
-  React.useEffect(() => {
-    socket.on("message", (newMessage: any) => {
+  useEffect(() => {
+    socket.on("message", (newMessage) => {
       dispatch(addNewMessage(newMessage));
     });
-
     return () => {
       socket.off("message");
-    }
-  }, []);
+    };
+  }, [dispatch, socket]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isElementVisible && messages.length > 0) {
-      refetch();
+      refetchMessages();
     }
-  }, [isElementVisible]);
+  }, [isElementVisible, messages.length, refetchMessages]);
 
-  React.useEffect(() => {
-    if (!params.channel_id && channels.length > 0 && params?.server_id) {
-      const lastSelectedChannel = lastSelectedChannels.find(
+  useEffect(() => {
+    if (!params.channel_id && channels.length > 0 && params.server_id) {
+      const lastSelected = lastSelectedChannels.find(
+        // TODO: Add type
         (el: any) => el.server_id === server._id
       );
-      navigate(
-        `/app/server/${server._id}/channel/${lastSelectedChannel.channel_id}`
-      );
+      if (lastSelected) {
+        navigate(`/app/server/${server._id}/channel/${lastSelected.channel_id}`);
+      }
     }
-  }, [channels]);
+  }, [channels, lastSelectedChannels, navigate, params.channel_id, params.server_id, server._id]);
+
 
   return (
     <>
@@ -196,7 +173,7 @@ function Chat() {
                 </div>
               )}
               
-              {(messages.length === 0 && isSuccess) && (
+              {(messages.length === 0 && isSuccess && !isPending && !isLoading) && (
                 <NoChannelContent />
               )}
             </div>
