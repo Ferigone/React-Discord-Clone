@@ -1,7 +1,7 @@
-/* @tailwind base; */
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "../node_modules/tailwindcss/src/css/preflight.css";
+/* @import "../node_modules/tailwindcss/src/css/preflight.css"; */
 
 
 
@@ -31,6 +31,10 @@
   --gray: #2c2f33;
   --dark-gray: #23272a;
   --black: #000;
+}
+
+#root {
+    background-color: #1C1F26 !important;
 }
 
 *{

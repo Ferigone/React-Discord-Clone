@@ -5,9 +5,9 @@ import React from "react";
 const NoServer = () => {
     return (
         <React.Fragment>
-            <div className="no_server">
-                <h1 className="no_server__title">No Server Selected</h1>
-                <p className="no_server__text">
+            <div className="flex h-full w-full justify-center items-center flex-col">
+                <h1 className="text-primary-text font-bold text-[30px]">No Server Selected</h1>
+                <p className="text-primary-text">
                     Select a server from the sidebar to view its channels
                 </p>
             </div>

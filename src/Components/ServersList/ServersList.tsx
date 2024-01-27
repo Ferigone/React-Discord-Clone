@@ -4,8 +4,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdCompass } from "react-icons/io";
 import CreateServer from "../../utils/queries/CreateServer";
 import GetServer from "../../utils/queries/GetServers";
-import { SocketContext } from '../../context/socket';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { SocketContext } from "../../context/socket";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import NewServerModal from "../Modals/NewServerModal";
 import { Tooltip } from "@nextui-org/react";
@@ -31,7 +31,7 @@ function ServersList() {
   const handleAddServer = (name: string, handleType: string) => {
     if (name.length < 3) return;
 
-    if (handleType === 'create') {
+    if (handleType === "create") {
       CreateServer({
         name,
       }).then((res: any) => {
@@ -39,15 +39,14 @@ function ServersList() {
           setModalState(false);
         }
       });
-    } else if (handleType === 'join') {
-      console.log('join server');
+    } else if (handleType === "join") {
+      console.log("join server");
     }
   };
 
-
   useEffect(() => {
     GetServer().then((res: any) => {
-      setServers(res.servers)
+      setServers(res.servers);
     });
 
     socket.on("server", (data: any) => {
@@ -56,49 +55,61 @@ function ServersList() {
 
     return () => {
       socket.off("server");
-    }
-
-  }, [])
+    };
+  }, []);
 
   return (
-    <div className="w-[72px] min-w-[72px] bg-[#202225] flex flex-col items-center py-3">
-      <div className="mb-2 bg-[#40444B] group hover:bg-[#5865F2] min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
-        <SiDiscord className="fill-[#DCDDDE] group-hover:fill-white h-7 w-7 duration-100" />
-      </div>
-      <div className="bg-[#2D2F32] h-[2px] w-[30%] mb-2" />
+    <>
+      <div className="w-[72px] min-w-[72px] rounded-[20px] bg-primary flex flex-col items-center py-3">
+        <div className="mb-2 bg-secondary group hover:bg-blue min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
+          <SiDiscord className="fill-primary-text group-hover:fill-white h-7 w-7 duration-100" />
+        </div>
+        <div className="bg-[#2D2F32] h-[2px] w-[30%] mb-2" />
 
-      <div className="block overflow-auto no-scrollbar">
-        {servers.map((server: any) => (
-          <Tooltip content={server.name} placement="right">
-            <Link to={`/app/server/${server._id}${params.channel_id ? `/channel/${params.channel_id}` : ""}`} key={server._id}>
-              <div className="mb-2 bg-[#40444B] group hover:bg-[#5865F2] h-[48px] w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
-                <span className="text-white text-[20px]">
-                  {server.name.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            </Link>
-          </Tooltip>
-        ))}
+        <div className="block overflow-auto no-scrollbar">
+          {servers.map((server: any) => (
+            <Tooltip
+              content={server.name}
+              placement="right"
+              className="bg-blue text-white"
+            >
+              <Link
+                to={`/app/server/${server._id}${
+                  params.channel_id ? `/channel/${params.channel_id}` : ""
+                }`}
+                key={server._id}
+              >
+                <div className="mb-2 bg-secondary group hover:bg-blue h-[48px] w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
+                  <span className="text-white text-[20px] mt-[-4px]">
+                    {server.name.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              </Link>
+            </Tooltip>
+          ))}
+        </div>
+
+        <button
+          onClick={() => {
+            setModalState(true);
+          }}
+          className="my-2 bg-secondary group hover:bg-blue min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer"
+        >
+          <AiOutlinePlus className="fill-blue group-hover:fill-white h-5 w-5 duration-100" />
+        </button>
+        <div className="mb-2 bg-secondary group hover:bg-blue min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
+          <IoMdCompass className="fill-blue group-hover:fill-white h-5 w-5 duration-100" />
+        </div>
       </div>
 
-      <div
-        onClick={() => {
-          setModalState(true);
-        }}
-        className="my-2 bg-[#40444B] group hover:bg-[#3BA55D] min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer"
-      >
-        <AiOutlinePlus className="fill-[#3BA55D] group-hover:fill-white h-5 w-5 duration-100" />
-      </div>
-      <div className="mb-2 bg-[#40444B] group hover:bg-[#3BA55D] min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
-        <IoMdCompass className="fill-[#3BA55D] group-hover:fill-white h-5 w-5 duration-100" />
-      </div>
-      <NewServerModal
-        visible={modalState}
-        setVisible={setModalState}
-        title="Create a new server"
-        addServer={handleAddServer}
-      />
-    </div>
+      {modalState && (
+        <NewServerModal
+          setVisible={setModalState}
+          title="Create a new server"
+          addServer={handleAddServer}
+        />
+      )}
+    </>
   );
 }
 

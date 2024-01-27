@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Input, Row, Checkbox, Button, Text, Dropdown } from "@nextui-org/react";
+import { Modal, Input, Checkbox, Button, Dropdown, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
 
 interface Props {
     visible: boolean;
@@ -23,21 +23,17 @@ const NewChannelModal = ({ visible, title, setVisible, addChannel }: Props) => {
         <div>
             <Modal
                 closeButton
-                blur
                 aria-labelledby="modal-title"
-                open={visible}
                 onClose={closeHandler}
             >
-                <Modal.Header>
-                    <Text id="modal-title" size={20}>
+                <ModalHeader>
+                    <p id="modal-title">
                         Create a Channel
                         <br />
-                    </Text>
-                </Modal.Header>
-                <Modal.Body>
+                    </p>
+                </ModalHeader>
+                <ModalBody>
                     <Input
-                        clearable
-                        bordered
                         fullWidth
                         color="primary"
                         size="lg"
@@ -45,12 +41,12 @@ const NewChannelModal = ({ visible, title, setVisible, addChannel }: Props) => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
-                </Modal.Body>
-                <Modal.Footer justify="center">
+                </ModalBody>
+                <ModalFooter>
                     <Button onPress={handleAddChannel} className="bg-blue w-full">
                         Create
                     </Button>
-                </Modal.Footer>
+                </ModalFooter>
             </Modal>
         </div>
     );

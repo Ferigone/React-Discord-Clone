@@ -16,8 +16,10 @@ import Sidebar from "../Components/SideBar/Sidebar";
 import Chat from "../Components/Chat/Chat";
 import NoServer from "../Components/Utilities/NoServer";
 import Settings from "../pages/Settings";
+import { selectLastSelectedServer, setLastSelectedServer } from "../store/reducers/appSlice";
 
 const ProtectedRoute = ({ children }: any) => {
+  const lastSelectedServer = useSelector(selectLastSelectedServer);
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,6 +67,23 @@ const ProtectedRoute = ({ children }: any) => {
   if (serverData) {
     dispatch(setServerInfo(serverData))
   }
+
+  React.useEffect(() => {
+    let server: any = serverData;
+    if(server?._id) {
+      dispatch(
+        setLastSelectedServer({
+          server_id: server._id,
+        })
+      );
+    }
+
+    if(lastSelectedServer?.server_id && !serverID) {
+      navigate('/app/server/' + lastSelectedServer.server_id)
+    }
+  }, [serverData])
+
+
 
   if (isLoading) return <div>Loading...</div>;
 

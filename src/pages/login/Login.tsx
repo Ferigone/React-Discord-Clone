@@ -21,7 +21,7 @@ function Login() {
 
     if (data.token) {
       dispatch(login(data.token));
-      navigate('/');
+      navigate('/app');
     }
   };
 

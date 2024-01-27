@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Login from "./pages/login/Login";
 import ServersList from "./Components/ServersList/ServersList";
 import ProtectedRoute from "./router/protectedRoute";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,9 +25,10 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-row h-screen">
+    <div className="dark flex flex-row h-screen p-2">
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to={"/app"} />} />
           <Route path="/app/*" element={
             <ProtectedRoute />
           } />
