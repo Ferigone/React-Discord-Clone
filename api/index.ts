@@ -42,7 +42,13 @@ io.of("/ws").use(SocketAuthMiddleware);
 
 // Socket.io server
 io.of("/ws").on("connection", (socket: any) => {
+  console.log("Client connected");
   socket.on("joinChannel", (channelId: string) => {
+    socket.rooms.forEach((room: string) => {
+      if (room.startsWith("channel:")) {
+        socket.leave(room);
+      }
+    });
     console.log(`Client joined channel ${channelId}`);
     socket.join(`channel:${channelId}`);
   });
@@ -97,6 +103,7 @@ MessageSchema.watch().on("change", async (data: any) => {
         },
       },
     ]);
+    console.log("Emmited message to " + `channel:${data.fullDocument.channel_id}`)
     io.of("/ws")
       .to(`channel:${data.fullDocument.channel_id}`)
       .emit("message", message[0]);
