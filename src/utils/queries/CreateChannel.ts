@@ -5,7 +5,7 @@ type Params = {
 
 const CreateChannel = (params: Params) => {
   return new Promise((resolve, reject) => {
-    return fetch(process.env.REACT_APP_API_URL + "/channels", {
+    return fetch(import.meta.env.VITE_APP_API_URL + "/channels", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

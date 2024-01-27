@@ -11,7 +11,7 @@ type LoginResponse = {
 
 const useLogin = (params: LoginParams): Promise<LoginResponse> => {
   return new Promise((resolve, reject) => {
-    return fetch(process.env.REACT_APP_API_URL + "/login", {
+    return fetch(import.meta.env.VITE_APP_API_URL + "/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

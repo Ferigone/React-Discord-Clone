@@ -1,6 +1,6 @@
 const GetServer = () => {
   return new Promise((resolve, reject) => {
-    return fetch(process.env.REACT_APP_API_URL + "/servers", {
+    return fetch(import.meta.env.VITE_APP_API_URL + "/servers", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

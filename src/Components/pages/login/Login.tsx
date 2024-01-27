@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-import Card from "../../Components/LoginCard/Card";
-import LoginQuery from "../../utils/queries/LoginQuery";
-import React from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import Card from "../../organisms/LoginCard/Card";
+import LoginQuery from "../../../utils/queries/LoginQuery";
+import React from "react";
 
-import { login, selectToken } from '../../store/reducers/userSlice'
-import { useNavigate } from 'react-router-dom';
+import { login, selectToken } from "../../../store/reducers/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
@@ -21,20 +21,20 @@ function Login() {
 
     if (data.token) {
       dispatch(login(data.token));
-      navigate('/app');
+      navigate("/app");
     }
   };
 
   React.useEffect(() => {
     if (token) {
-      navigate('/');
+      navigate("/");
     }
-  }, [])
+  }, []);
 
   return (
     <div className="flex w-full justify-center items-center flex-col h-screen bg-dark-blue">
       <Card onSubmit={signIn} />
-      <div className="area" >
+      <div className="area">
         <ul className="circles">
           <li></li>
           <li></li>
@@ -47,7 +47,7 @@ function Login() {
           <li></li>
           <li></li>
         </ul>
-      </div >
+      </div>
     </div>
   );
 }

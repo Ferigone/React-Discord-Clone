@@ -10,7 +10,6 @@ import { setServerInfo, setServerChannels } from "../store/reducers/serverSlice"
 import GetChannels from "../utils/queries/GetChannels";
 import GetChannelInfo from "../utils/queries/GetChannelInfo";
 import { setChannelInfo } from "../store/reducers/channelSlice";
-import { Router } from 'express';
 import ServersList from "../Components/organisms/ServersList/ServersList";
 import Sidebar from "../Components/organisms/SideBar/Sidebar";
 import Chat from "../Components/organisms/Chat/Chat";
@@ -32,7 +31,7 @@ const ProtectedRoute = ({ children }: any) => {
   const { isLoading, isError, data: user, error } = useQuery({
     queryKey: ['user'],
     queryFn: () =>
-      fetch(process.env.REACT_APP_API_URL + '/user', {
+      fetch(import.meta.env.VITE_APP_API_URL + '/user', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 const GetChannelInfo = (server_id: string) => {
   return new Promise((resolve, reject) => {
     return fetch(
-      process.env.REACT_APP_API_URL + `/channel?server=${server_id}`,
+      import.meta.env.VITE_APP_API_URL + `/channel?server=${server_id}`,
       {
         method: "GET",
         headers: {

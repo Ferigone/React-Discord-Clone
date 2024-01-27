@@ -1,6 +1,6 @@
 const SendMessage = (message: string, channelId: string) => {
   return new Promise((resolve, reject) => {
-    return fetch(process.env.REACT_APP_API_URL + "/channel/message", {
+    return fetch(import.meta.env.VITE_APP_API_URL + "/channel/message", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

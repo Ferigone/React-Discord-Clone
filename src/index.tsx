@@ -1,18 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import store from './store/store';
 import { Provider } from 'react-redux';
 import './index.css'
-import './fonts/stylesheet.css'
+import "./assets/fonts/stylesheet.css";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { NextUIProvider } from '@nextui-org/react';
 
-
 const queryClient = new QueryClient();
 
-ReactDOM.render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <NextUIProvider>
@@ -20,6 +17,4 @@ ReactDOM.render(
         </NextUIProvider>
       </Provider>
     </QueryClientProvider>
-  </React.StrictMode >,
-  document.getElementById('root')
 );
