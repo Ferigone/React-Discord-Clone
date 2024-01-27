@@ -8,17 +8,17 @@ import { Textarea } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 
 import ChatHeader from "../ChatHeader/ChatHeader";
-import Message from "../Message/Message";
+import Message from "../../molecules/Message";
 import UsersList from "../UsersList/UsersList";
 import MessageSkeleton from "../Skeletons/Message";
 import NoChannelContent from "../NoChannelContent/NoChannelContent";
 
-import SendMessage from "../../utils/queries/SendMessage";
-import GetChannelInfo from "../../utils/queries/GetChannelInfo";
-import GetMessages from "../../utils/queries/GetMessages";
+import SendMessage from "../../../utils/queries/SendMessage";
+import GetChannelInfo from "../../../utils/queries/GetChannelInfo";
+import GetMessages from "../../../utils/queries/GetMessages";
 
-import { SocketContext } from "../../context/socket";
-import { useIsVisible } from "../../hooks/useIsElementVisible";
+import { SocketContext } from "../../../context/socket";
+import { useIsVisible } from "../../../hooks/useIsElementVisible";
 
 import {
   addMessages,
@@ -28,14 +28,14 @@ import {
   selectMessages,
   setChannelInfo,
   setMessages,
-} from "../../store/reducers/channelSlice";
+} from "../../../store/reducers/channelSlice";
 import {
   selectChannels,
   selectServer,
-} from "../../store/reducers/serverSlice";
+} from "../../../store/reducers/serverSlice";
 import {
   selectLastSelectedChannels,
-} from "../../store/reducers/appSlice";
+} from "../../../store/reducers/appSlice";
 
 function Chat() {
   const dispatch = useDispatch();
@@ -51,6 +51,7 @@ function Chat() {
   const lastSelectedChannels = useSelector(selectLastSelectedChannels);
 
   const [input, setInput] = useState("");
+  const [totalChatMessages, setTotalChatMessages] = useState(0);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const elementRef = useRef<HTMLDivElement>(null);
   
@@ -80,6 +81,7 @@ function Chat() {
       } else {
         dispatch(setMessages(newMessages));
       }
+      setTotalChatMessages(newMessages.total);
       return newMessages;
     },
     enabled: !!channel._id,
@@ -173,7 +175,7 @@ function Chat() {
                 </div>
               )}
               
-              {(messages.length === 0 && isSuccess && !isPending && !isLoading) && (
+              {(!isPending && !isLoading && totalChatMessages === 0) && (
                 <NoChannelContent />
               )}
             </div>

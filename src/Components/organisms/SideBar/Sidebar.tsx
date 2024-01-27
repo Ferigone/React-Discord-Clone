@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarChannel from "../SidebarChannel/SidebarChannel";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, selectUser } from "../../store/reducers/userSlice";
+import { logout, selectUser } from "../../../store/reducers/userSlice";
 
 import { MdExpandMore } from "react-icons/md";
 import { Button } from "@nextui-org/react";
@@ -11,10 +11,10 @@ import {
   selectChannels,
   selectServer,
   setServerChannels,
-} from "../../store/reducers/serverSlice";
-import CreateChannel from "../../utils/queries/CreateChannel";
+} from "../../../store/reducers/serverSlice";
+import CreateChannel from "../../../utils/queries/CreateChannel";
 import NewChannelModal from "../Modals/NewChannelModal";
-import GetChannels from "../../utils/queries/GetChannels";
+import GetChannels from "../../../utils/queries/GetChannels";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 

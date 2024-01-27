@@ -121,7 +121,11 @@ router.get("/:channel_id/messages", async (req, res) => {
     },
   ]);
 
-  return res.status(200).json({ messages: messages });
+  const total = await MessageSchema.countDocuments({
+    channel_id,
+  });
+
+  return res.status(200).json({ messages: messages, total });
 });
 
 router.post("/message", async (req, res) => {

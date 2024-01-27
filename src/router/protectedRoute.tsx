@@ -11,11 +11,11 @@ import GetChannels from "../utils/queries/GetChannels";
 import GetChannelInfo from "../utils/queries/GetChannelInfo";
 import { setChannelInfo } from "../store/reducers/channelSlice";
 import { Router } from 'express';
-import ServersList from "../Components/ServersList/ServersList";
-import Sidebar from "../Components/SideBar/Sidebar";
-import Chat from "../Components/Chat/Chat";
-import NoServer from "../Components/Utilities/NoServer";
-import Settings from "../pages/Settings";
+import ServersList from "../Components/organisms/ServersList/ServersList";
+import Sidebar from "../Components/organisms/SideBar/Sidebar";
+import Chat from "../Components/organisms/Chat/Chat";
+import NoServer from "../Components/organisms/Utilities/NoServer";
+import Settings from "../Components/pages/Settings";
 import { selectLastSelectedServer, setLastSelectedServer } from "../store/reducers/appSlice";
 
 const ProtectedRoute = ({ children }: any) => {

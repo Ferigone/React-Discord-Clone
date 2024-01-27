@@ -1,7 +1,7 @@
 import { User } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUsers } from "../../store/reducers/serverSlice";
+import { selectUsers } from "../../../store/reducers/serverSlice";
 
 function UsersList() {
   const dispatch = useDispatch();
