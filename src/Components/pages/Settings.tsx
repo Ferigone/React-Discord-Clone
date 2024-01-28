@@ -1,7 +1,6 @@
 const Settings = () => {
     return (
         <div className="bg-gray absolute w-full h-full flex justify-center py-16">
-
             <div className="flex flex-row">
                 <aside className="w-full p-6 dark:bg-gray-900 dark:text-gray-100">
                     <nav className="space-y-8 text-sm">

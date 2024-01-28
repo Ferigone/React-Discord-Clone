@@ -1,17 +1,11 @@
-import React, { useEffect } from "react";
-import Chat from "./Components/organisms/Chat/Chat";
-import Sidebar from "./Components/organisms/SideBar/Sidebar";
-import { selectToken, selectUser } from "./store/reducers/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Login from "./Components/pages/login/Login";
-import ServersList from "./Components/organisms/ServersList/ServersList";
 import ProtectedRoute from "./router/protectedRoute";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-  const token = useSelector(selectToken);
 
   document.onvisibilitychange = () => {
     // if (user.uid) {

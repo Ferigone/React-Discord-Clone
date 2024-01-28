@@ -58,7 +58,7 @@ function Chat() {
   const isElementVisible = useIsVisible(elementRef);
 
   // Fetch channel info
-  const { isLoading: isLoadingChannel } = useQuery({
+  useQuery({
     queryKey: ["channel", params.channel_id],
     queryFn: async () => {
       if (!params.channel_id) return;
@@ -71,7 +71,7 @@ function Chat() {
   });
 
   // Fetch messages
-  const { isLoading, isPending, data, isSuccess, refetch: refetchMessages } = useQuery({
+  const { isLoading, isPending, data, refetch: refetchMessages } = useQuery({
     queryKey: ["messages", channel._id],
     queryFn: async () => {
       if (!channel._id) return;

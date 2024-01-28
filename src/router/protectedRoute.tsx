@@ -1,15 +1,11 @@
-import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectToken, setUserData } from "../store/reducers/userSlice";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { io } from "socket.io-client";
 import { socket, SocketContext } from "../context/socket";
 import GetServer from "../utils/queries/GetServer";
-import { setServerInfo, setServerChannels } from "../store/reducers/serverSlice";
-import GetChannels from "../utils/queries/GetChannels";
-import GetChannelInfo from "../utils/queries/GetChannelInfo";
-import { setChannelInfo } from "../store/reducers/channelSlice";
+import { setServerInfo } from "../store/reducers/serverSlice";
 import ServersList from "../Components/organisms/ServersList/ServersList";
 import Sidebar from "../Components/organisms/SideBar/Sidebar";
 import Chat from "../Components/organisms/Chat/Chat";
@@ -17,7 +13,7 @@ import NoServer from "../Components/organisms/Utilities/NoServer";
 import Settings from "../Components/pages/Settings";
 import { selectLastSelectedServer, setLastSelectedServer } from "../store/reducers/appSlice";
 
-const ProtectedRoute = ({ children }: any) => {
+const ProtectedRoute = () => {
   const lastSelectedServer = useSelector(selectLastSelectedServer);
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -28,7 +24,7 @@ const ProtectedRoute = ({ children }: any) => {
     navigate("/login");
   }
 
-  const { isLoading, isError, data: user, error } = useQuery({
+  const { isLoading, data: user } = useQuery({
     queryKey: ['user'],
     queryFn: () =>
       fetch(import.meta.env.VITE_APP_API_URL + '/user', {
@@ -42,9 +38,9 @@ const ProtectedRoute = ({ children }: any) => {
   });
 
 
-  let serverID = params['*']?.split('/')[1];
+  const serverID = params['*']?.split('/')[1];
 
-  const { isLoading: isLoadingServer, data: serverData } = useQuery({
+  const { data: serverData } = useQuery({
     queryKey: ['server', serverID],
     queryFn: () => {
       return GetServer(serverID || "")
@@ -69,7 +65,7 @@ const ProtectedRoute = ({ children }: any) => {
 
   React.useEffect(() => {
     console.log(params)
-    let server: any = serverData;
+    const server: any = serverData;
     if(server?._id) {
       dispatch(
         setLastSelectedServer({

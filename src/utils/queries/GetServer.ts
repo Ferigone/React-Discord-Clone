@@ -1,4 +1,4 @@
-const GetServer = (server_id: String) => {
+const GetServer = (server_id: string) => {
   return new Promise((resolve, reject) => {
     return fetch(import.meta.env.VITE_APP_API_URL + `/server?id=${server_id}`, {
       method: "GET",

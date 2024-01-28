@@ -7,7 +7,7 @@ export const modalSlice = createSlice({
   },
   reducers: {
     setAddServerModal: (state, { payload }) => {
-      let tempState = state;
+      const tempState = state;
       tempState.addServer = payload;
       return (state = tempState);
     },

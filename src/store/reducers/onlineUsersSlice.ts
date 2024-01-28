@@ -13,8 +13,8 @@ export const usersSlice = createSlice({
       return (state = tempState);
     },
     modifyUser: (state, { payload }) => {
-      let tempState: any = state;
-      let index = tempState.findIndex(
+      const tempState: any = state;
+      const index = tempState.findIndex(
         (el: any) => el.userData.uid === payload.userData.uid
       );
       tempState[index] = payload;
