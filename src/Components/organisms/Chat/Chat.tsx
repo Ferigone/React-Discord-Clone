@@ -11,7 +11,7 @@ import ChatHeader from "../ChatHeader/ChatHeader";
 import Message from "@molecules/Message";
 import UsersList from "../UsersList/UsersList";
 import MessageSkeleton from "../Skeletons/Message";
-import NoChannelContent from "../../atoms/EmptyChatPlaceholder";
+import NoChannelContent from "@atoms/EmptyChatPlaceholder";
 
 import SendMessage from "@utils/queries/SendMessage";
 import GetChannelInfo from "@utils/queries/GetChannelInfo";
