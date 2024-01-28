@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../../organisms/LoginCard/Card";
-import LoginQuery from "../../../utils/queries/LoginQuery";
+import LoginQuery from "@utils/queries/LoginQuery";
 import React from "react";
 
-import { login, selectToken } from "../../../store/reducers/userSlice";
+import { login, selectToken } from "@store/reducers/userSlice";
 import { useNavigate } from "react-router-dom";
 
 function Login() {

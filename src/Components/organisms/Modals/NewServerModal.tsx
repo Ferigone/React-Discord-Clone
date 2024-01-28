@@ -2,7 +2,6 @@ import React from "react";
 import {
   Modal,
   Input,
-  Checkbox,
   Button,
   ModalHeader,
   ModalBody,

@@ -1,6 +1,6 @@
 import { User } from "@nextui-org/react";
 import { useSelector } from "react-redux";
-import { selectUsers } from "../../../store/reducers/serverSlice";
+import { selectUsers } from "@store/reducers/serverSlice";
 
 function UsersList() {
   const users = useSelector(selectUsers);
@@ -14,7 +14,7 @@ function UsersList() {
               src: `https://via.placeholder.com/150/000000/FFFFFF/?text=${el.username[0]}`,
             }}
             name={
-              <span className="font-semibold text-[15px]">{el.username}</span>
+              <span className="font-semibold text-primary-text text-[15px]">{el.username}</span>
             }
             description={`#${el.id.slice(0, 6).toUpperCase()}`}
             className="font-semibold"

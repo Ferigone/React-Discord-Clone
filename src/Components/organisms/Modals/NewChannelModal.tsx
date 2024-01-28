@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Input, Checkbox, Button, Dropdown, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
+import { Modal, Input, Button, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
 
 interface Props {
     visible: boolean;

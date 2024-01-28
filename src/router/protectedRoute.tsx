@@ -1,17 +1,17 @@
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectToken, setUserData } from "../store/reducers/userSlice";
+import { logout, selectToken, setUserData } from "@store/reducers/userSlice";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { socket, SocketContext } from "../context/socket";
-import GetServer from "../utils/queries/GetServer";
-import { setServerInfo } from "../store/reducers/serverSlice";
-import ServersList from "../Components/organisms/ServersList/ServersList";
-import Sidebar from "../Components/organisms/SideBar/Sidebar";
-import Chat from "../Components/organisms/Chat/Chat";
-import NoServer from "../Components/organisms/Utilities/NoServer";
-import Settings from "../Components/pages/Settings";
-import { selectLastSelectedServer, setLastSelectedServer } from "../store/reducers/appSlice";
+import { socket, SocketContext } from "@context/socket";
+import GetServer from "@utils/queries/GetServer";
+import { setServerInfo } from "@store/reducers/serverSlice";
+import ServersList from "@organisms/ServersList/ServersList";
+import Sidebar from "@organisms/SideBar/Sidebar";
+import Chat from "@organisms/Chat/Chat";
+import NoServer from "@organisms/Utilities/NoServer";
+import Settings from "@pages/Settings";
+import { selectLastSelectedServer, setLastSelectedServer } from "@store/reducers/appSlice";
 
 const ProtectedRoute = () => {
   const lastSelectedServer = useSelector(selectLastSelectedServer);

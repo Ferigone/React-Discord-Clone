@@ -1,5 +1,3 @@
-import React from "react";
-
 const MessageSkeleton = () => {
   return (
     <div className="animate-pulse flex space-x-4 px-8 py-4">

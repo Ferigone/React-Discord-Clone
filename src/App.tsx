@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Login from "./Components/pages/login/Login";
+import Login from "@pages/login/Login";
 import ProtectedRoute from "./router/protectedRoute";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 

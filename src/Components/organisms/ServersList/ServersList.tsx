@@ -1,20 +1,17 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { SiDiscord } from "react-icons/si";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoMdCompass } from "react-icons/io";
-import CreateServer from "../../../utils/queries/CreateServer";
-import GetServer from "../../../utils/queries/GetServers";
-import { SocketContext } from "../../../context/socket";
+import CreateServer from "@utils/queries/CreateServer";
+import GetServer from "@utils/queries/GetServers";
+import { SocketContext } from "@context/socket";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import NewServerModal from "../Modals/NewServerModal";
 import { Tooltip } from "@nextui-org/react";
-import GetChannels from "../../../utils/queries/GetChannels";
-import { useQuery } from "@tanstack/react-query";
 
 function ServersList() {
   const [modalState, setModalState] = useState<boolean>(false);
-  const fileInput = useRef<HTMLInputElement | any>(null);
   const [serverImage, setServerImage] = useState(null);
   const [servers, setServers] = useState<any>([]);
   const socket = useContext(SocketContext);

@@ -8,17 +8,17 @@ import { Textarea } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 
 import ChatHeader from "../ChatHeader/ChatHeader";
-import Message from "../../molecules/Message";
+import Message from "@molecules/Message";
 import UsersList from "../UsersList/UsersList";
 import MessageSkeleton from "../Skeletons/Message";
-import NoChannelContent from "../NoChannelContent/NoChannelContent";
+import NoChannelContent from "../../atoms/EmptyChatPlaceholder";
 
-import SendMessage from "../../../utils/queries/SendMessage";
-import GetChannelInfo from "../../../utils/queries/GetChannelInfo";
-import GetMessages from "../../../utils/queries/GetMessages";
+import SendMessage from "@utils/queries/SendMessage";
+import GetChannelInfo from "@utils/queries/GetChannelInfo";
+import GetMessages from "@utils/queries/GetMessages";
 
-import { SocketContext } from "../../../context/socket";
-import { useIsVisible } from "../../../hooks/useIsElementVisible";
+import { SocketContext } from "@context/socket";
+import { useIsVisible } from "@hooks/useIsElementVisible";
 
 import {
   addMessages,
@@ -28,14 +28,14 @@ import {
   selectMessages,
   setChannelInfo,
   setMessages,
-} from "../../../store/reducers/channelSlice";
+} from "@store/reducers/channelSlice";
 import {
   selectChannels,
   selectServer,
-} from "../../../store/reducers/serverSlice";
+} from "@store/reducers/serverSlice";
 import {
   selectLastSelectedChannels,
-} from "../../../store/reducers/appSlice";
+} from "@store/reducers/appSlice";
 
 function Chat() {
   const dispatch = useDispatch();
