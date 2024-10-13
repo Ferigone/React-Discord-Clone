@@ -5,6 +5,7 @@ import React from "react";
 
 import { login, selectToken } from "@store/reducers/userSlice";
 import { useNavigate } from "react-router-dom";
+import { setCookie } from "@utils/cookies";
 
 function Login() {
   const dispatch = useDispatch();
@@ -20,10 +21,13 @@ function Login() {
     });
 
     if (data.token) {
-      dispatch(login(data.token));
+      dispatch(login("Bearer " + data.token));
+      setCookie("token", data.token);
       navigate("/app");
     }
   };
+
+
 
   React.useEffect(() => {
     if (token) {

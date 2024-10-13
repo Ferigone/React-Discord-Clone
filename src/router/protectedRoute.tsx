@@ -1,7 +1,7 @@
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectToken, setUserData } from "@store/reducers/userSlice";
-import React from "react";
+import { logout, setUserData } from "@store/reducers/userSlice";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { socket, SocketContext } from "@context/socket";
 import GetServer from "@utils/queries/GetServer";
@@ -12,93 +12,97 @@ import Chat from "@organisms/Chat/Chat";
 import NoServer from "@organisms/Utilities/NoServer";
 import Settings from "@pages/Settings";
 import { selectLastSelectedServer, setLastSelectedServer } from "@store/reducers/appSlice";
+import { getCookie } from "@utils/cookies"; // Import function to get token from cookies
 
 const ProtectedRoute = () => {
-  const lastSelectedServer = useSelector(selectLastSelectedServer);
-  const token = useSelector(selectToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
+  
+  const lastSelectedServer = useSelector(selectLastSelectedServer);
+  const serverID = params['*']?.split('/')[1];
 
-  if (!token) {
-    navigate("/login");
-  }
+  // Get token from cookies
+  const token = getCookie('token'); // Assuming the cookie is named 'token'
 
-  const { isLoading, data: user } = useQuery({
+  // Fetch user data
+  const { isLoading: isUserLoading, data: user, error: userError } = useQuery({
     queryKey: ['user'],
     queryFn: () =>
-      fetch(import.meta.env.VITE_APP_API_URL + '/user', {
+      fetch(`${import.meta.env.VITE_APP_API_URL}/user`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         },
       }).then((res) => res.json()),
     refetchOnWindowFocus: false,
   });
 
-
-  const serverID = params['*']?.split('/')[1];
-
-  const { data: serverData } = useQuery({
+  // Fetch server data if serverID exists
+  const { data: serverData, error: serverError } = useQuery({
     queryKey: ['server', serverID],
-    queryFn: () => {
-      return GetServer(serverID || "")
-    },
+    queryFn: () => GetServer(serverID || ""),
     refetchOnWindowFocus: false,
-    enabled: !!serverID
+    enabled: !!serverID,
   });
 
-  if (user) {
-    dispatch(setUserData(user.user));
-    socket.auth = { token }
-    socket.connect().on('connect_error', (e) => {
-      if (e.message === '401') {
-        dispatch(logout())
+  // Manage socket connection
+  useEffect(() => {
+    if (user) {
+      dispatch(setUserData(user.user));
+
+      // Set token for socket authentication
+      socket.auth = { token };
+      socket.connect();
+
+      // Handle connection errors
+      socket.on('connect_error', (e) => {
+        if (e.message === '401') {
+          dispatch(logout());
+        }
+      });
+
+      // Cleanup socket connection when component unmounts
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [user, token, dispatch]);
+
+  // Update Redux with server data
+  useEffect(() => {
+    if (serverData) {
+      dispatch(setServerInfo(serverData));
+
+      if (serverData._id) {
+        dispatch(setLastSelectedServer({ server_id: serverData._id }));
       }
-    })
-  }
-
-  if (serverData) {
-    dispatch(setServerInfo(serverData))
-  }
-
-  React.useEffect(() => {
-    console.log(params)
-    const server: any = serverData;
-    if(server?._id) {
-      dispatch(
-        setLastSelectedServer({
-          server_id: server._id,
-        })
-      );
     }
 
-    if(lastSelectedServer?.server_id && !serverID && window.location.pathname !== '/app/settings') {
-      navigate('/app/server/' + lastSelectedServer.server_id)
+    if (lastSelectedServer?.server_id && !serverID && window.location.pathname !== '/app/settings') {
+      navigate(`/app/server/${lastSelectedServer.server_id}`);
     }
-  }, [serverData])
+  }, [serverData, serverID, lastSelectedServer, dispatch, navigate]);
 
-
-
-  if (isLoading) return <div>Loading...</div>;
+  if (isUserLoading) return <div>Loading user data...</div>;
+  if (userError) return <div>Error loading user data</div>;
+  if (serverError) return <div>Error loading server data</div>;
 
   return (
-    <React.Fragment>
-      <SocketContext.Provider value={socket}>
-        <ServersList />
-        <Routes>
-          <Route path="/" element={<NoServer />} />
-          <Route path="/server/:server_id?/channel?/:channel_id?" element={
-            <React.Fragment>
-              <Sidebar />
-              <Chat />
-            </React.Fragment>
-          } />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
-      </SocketContext.Provider>
-    </React.Fragment>
+    <SocketContext.Provider value={socket}>
+      <ServersList />
+      <Routes>
+        <Route path="/" element={<NoServer />} />
+        <Route path="/server/:server_id?/channel?/:channel_id?" element={
+          <>
+            <Sidebar />
+            <Chat />
+          </>
+        } />
+        <Route path="/settings" element={<Settings />} />
+      </Routes>
+    </SocketContext.Provider>
   );
 };
 

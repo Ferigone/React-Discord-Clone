@@ -1,20 +1,13 @@
-const GetServer = (server_id: string) => {
-  return new Promise((resolve, reject) => {
-    return fetch(import.meta.env.VITE_APP_API_URL + `/server?id=${server_id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        resolve(data.server);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+// src/utils/queries/GetServerById.ts
+import apiService from "@services/apiService";
+
+const GetServerById = async (server_id: string) => {
+  try {
+    const data = await apiService.get(`${import.meta.env.VITE_APP_API_URL}/server/${server_id}`);
+    return data.server; // Return only the `server` object from the data
+  } catch (error) {
+    throw new Error("Failed to fetch server: " + error.message);
+  }
 };
 
-export default GetServer;
+export default GetServerById;

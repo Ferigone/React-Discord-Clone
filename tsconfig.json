@@ -35,6 +35,7 @@
       "@context/*": ["src/context/*"],
       "@assets/*": ["src/assets/*"],
       "@store/*": ["src/store/*"],
+      "@services/*": ["src/services/*"],
     },
   },
   "include": ["src", "vite.config.mjs"],

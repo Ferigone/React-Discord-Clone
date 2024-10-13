@@ -34,6 +34,7 @@ const NewServerModal = ({ title, setVisible, addServer }: Props) => {
       aria-labelledby="modal-title"
       onClose={closeHandler}
       className="z-50"
+      isOpen={true}
     >
       <ModalHeader>
         <div>

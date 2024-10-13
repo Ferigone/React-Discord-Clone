@@ -19,7 +19,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="dark flex flex-row h-screen p-2">
+    <div className="dark flex flex-row h-screen">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to={"/app"} />} />

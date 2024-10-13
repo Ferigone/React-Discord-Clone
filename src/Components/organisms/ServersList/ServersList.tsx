@@ -44,6 +44,7 @@ function ServersList() {
   useEffect(() => {
     GetServer().then((res: any) => {
       setServers(res.servers);
+      console.log(res.servers);
     });
 
     socket.on("server", (data: any) => {
@@ -71,7 +72,7 @@ function ServersList() {
               className="bg-blue text-white"
             >
               <Link
-                to={`/app/server/${server._id}${
+                to={`/app/server/${server.id}${
                   params.channel_id ? `/channel/${params.channel_id}` : ""
                 }`}
                 key={server._id}

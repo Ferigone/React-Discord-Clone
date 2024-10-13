@@ -1,26 +1,22 @@
+// src/utils/queries/CreateChannel.ts
+import apiService from "@services/apiService";
+
 type Params = {
   name: string;
   server_id: string;
 };
 
-const CreateChannel = (params: Params) => {
-  return new Promise((resolve, reject) => {
-    return fetch(import.meta.env.VITE_APP_API_URL + "/channels", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify(params),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        resolve(data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+const CreateChannel = async (params: Params): Promise<any> => {
+  try {
+    // Use apiService to make the POST request
+    const data = await apiService.post(`${import.meta.env.VITE_APP_API_URL}/channels`, params);
+    
+    // Return the response from the server
+    return data;
+  } catch (error) {
+    // Handle and throw error for the caller to manage
+    throw new Error("Failed to create channel: " + error.message);
+  }
 };
 
 export default CreateChannel;
