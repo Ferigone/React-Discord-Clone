@@ -13,6 +13,7 @@ import NoServer from "@organisms/Utilities/NoServer";
 import Settings from "@pages/Settings";
 import { selectLastSelectedServer, setLastSelectedServer } from "@store/reducers/appSlice";
 import { getCookie } from "@utils/cookies"; // Import function to get token from cookies
+import { socketService } from "@services/socketService";
 
 const ProtectedRoute = () => {
   const dispatch = useDispatch();
@@ -51,21 +52,11 @@ const ProtectedRoute = () => {
   useEffect(() => {
     if (user) {
       dispatch(setUserData(user.user));
-
-      // Set token for socket authentication
-      socket.auth = { token };
-      socket.connect();
-
-      // Handle connection errors
-      socket.on('connect_error', (e) => {
-        if (e.message === '401') {
-          dispatch(logout());
-        }
-      });
+      socketService.init(token || '');
 
       // Cleanup socket connection when component unmounts
       return () => {
-        socket.disconnect();
+        socketService.disconnect();
       };
     }
   }, [user, token, dispatch]);

@@ -1,24 +1,20 @@
-const SendMessage = (message: string, channelId: string) => {
-  return new Promise((resolve, reject) => {
-    return fetch(import.meta.env.VITE_APP_API_URL + "/channel/message", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        message,
-        channel_id: channelId,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        resolve(data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+// src/utils/queries/SendMessage.ts
+import apiService from "@services/apiService";
+
+const SendMessage = async (message: string, channelId: string): Promise<any> => {
+  try {
+    // Use apiService to send a POST request
+    const data = await apiService.post(`${import.meta.env.VITE_APP_API_URL}/channel/message`, {
+      message,
+      channel_id: channelId,
+    });
+
+    // Return the response data
+    return data;
+  } catch (error) {
+    // Handle and throw the error to be managed by the caller
+    throw new Error("Failed to send message: " + error.message);
+  }
 };
 
 export default SendMessage;

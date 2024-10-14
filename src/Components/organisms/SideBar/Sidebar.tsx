@@ -27,7 +27,7 @@ function Sidebar() {
 
   const [addChannelModalState, setAddChannelModalState] = useState(false);
   useQuery({
-    queryKey: ["channels", server._id],
+    queryKey: ["channels", server.id],
     queryFn: () => {
       GetChannels(server._id).then((data) => {
         dispatch(setServerChannels(data));
@@ -41,14 +41,14 @@ function Sidebar() {
   const handleAddChannel = (name: string) => {
     if (name) {
       CreateChannel({
-        server_id: server._id,
+        serverId: server.id,
         name,
       });
     }
   };
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col bg-primary min-w-[240px] w-[240px] mx-2 rounded-2xl h-full">
+      <div className="flex flex-col bg-primary min-w-[240px] w-[240px] mx-2 rounded-b-2xl h-full">
         <div className="flex flex-row justify-between items-center px-5 h-[55px] text-white border-b border-black cursor-pointer duration-100">
           <h4 className="font-semibold">{server.name}</h4>
           <MdExpandMore className="w-6 h-6" />
@@ -68,8 +68,8 @@ function Sidebar() {
           </div>
 
           <div className="px-2">
-            {channels?.map(({ _id, name }: { _id: string; name: string }) => (
-              <SidebarChannel key={_id} id={_id} channelName={name} />
+            {channels?.map(({ id, name }: { _id: string; name: string }) => (
+              <SidebarChannel key={id} id={id} channelName={name} />
             ))}
           </div>
         </div>
@@ -80,9 +80,9 @@ function Sidebar() {
           addChannel={handleAddChannel}
         />
       </div>
-      <div className="h-[75px] flex flex-row items-center justify-between px-2 bg-primary rounded-2xl mx-2 mt-2">
+      <div className="h-[75px] flex flex-row items-center justify-between px-2 bg-primary rounded-t-2xl mx-2 mt-2">
         <div className="flex flex-row items-center">
-          <img src={user?.photo || `https://via.placeholder.com/150/000000/FFFFFF/?text=${user.username[0]}`} className="h-9 w-9 rounded-full mr-2" alt="" />
+          <img src={user?.photo || `https://placehold.co/200x200/000000/FFFFFF/png?font=roboto&text=${user?.username[0]}`} className="h-9 w-9 rounded-full mr-2" alt="" />
           <div className="flex flex-col cursor-pointer">
             <span className="text-white font-bold text-sm">
               {user?.username}

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const init = {
-  _id: null,
+  id: null,
   type: null,
   name: null,
   nsfw: null,

@@ -3,7 +3,7 @@ import apiService from "@services/apiService";
 
 type Params = {
   name: string;
-  server_id: string;
+  serverId: string;
 };
 
 const CreateChannel = async (params: Params): Promise<any> => {

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const serverSlice = createSlice({
   name: "server",
   initialState: {
-    _id: null,
+    id: null,
     name: null,
     icon: null,
     owner_id: null,

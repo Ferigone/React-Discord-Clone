@@ -10,20 +10,15 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import NewServerModal from "../Modals/NewServerModal";
 import { Tooltip } from "@nextui-org/react";
 
+import JoinServer from "@utils/queries/JoinServer";
+
 function ServersList() {
   const [modalState, setModalState] = useState<boolean>(false);
-  const [serverImage, setServerImage] = useState(null);
   const [servers, setServers] = useState<any>([]);
   const socket = useContext(SocketContext);
 
   const params = useParams();
   const navigate = useNavigate();
-
-  const handleOutsideCLick = (e: any) => {
-    if (e.target !== e.currentTarget) return;
-    setModalState(false);
-    setServerImage(null);
-  };
 
   const handleAddServer = (name: string, handleType: string) => {
     if (name.length < 3) return;
@@ -32,12 +27,20 @@ function ServersList() {
       CreateServer({
         name,
       }).then((res: any) => {
-        if (res.server_id) {
+        if (res.server.id) {
           setModalState(false);
+          navigate(`/app/server/${res.server.id}`);
         }
       });
     } else if (handleType === "join") {
-      console.log("join server");
+      JoinServer({
+        name,
+      }).then((res: any) => {
+        if (res.server.id) {
+          setModalState(false);
+          navigate(`/app/server/${res.server.id}`);
+        }
+      })
     }
   };
 
@@ -58,7 +61,7 @@ function ServersList() {
 
   return (
     <>
-      <div className="w-[72px] min-w-[72px] rounded-[20px] bg-primary flex flex-col items-center py-3">
+      <div className="w-[72px] min-w-[72px] bg-primary flex flex-col items-center py-3">
         <div className="mb-2 bg-secondary group hover:bg-blue min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
           <SiDiscord className="fill-primary-text group-hover:fill-white h-7 w-7 duration-100" />
         </div>
@@ -70,12 +73,12 @@ function ServersList() {
               content={server.name}
               placement="right"
               className="bg-blue text-white"
+              key={server.id}
             >
               <Link
                 to={`/app/server/${server.id}${
                   params.channel_id ? `/channel/${params.channel_id}` : ""
                 }`}
-                key={server._id}
               >
                 <div className="mb-2 bg-secondary group hover:bg-blue h-[48px] w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
                   <span className="text-white text-[20px] mt-[-4px]">
@@ -100,13 +103,12 @@ function ServersList() {
         </div>
       </div>
 
-      {modalState && (
-        <NewServerModal
-          setVisible={setModalState}
-          title="Create a new server"
-          addServer={handleAddServer}
-        />
-      )}
+      <NewServerModal
+        setVisible={setModalState}
+        title="Create a new server"
+        addServer={handleAddServer}
+        visible={modalState}
+      />
     </>
   );
 }
