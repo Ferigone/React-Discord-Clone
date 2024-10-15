@@ -26,10 +26,16 @@ export const serverSlice = createSlice({
           ...action.payload,
         }
     },
+    addServerChannel: (state, action) => {
+      return state = {
+        ...state,
+        channels: [...state.channels, action.payload],
+      }
+    }
   },
 });
 
-export const { setServerInfo, setServerChannels } = serverSlice.actions;
+export const { setServerInfo, setServerChannels, addServerChannel } = serverSlice.actions;
 
 export const selectServer = (state: any) => state.server;
 export const selectUsers = (state: any) => state.server.members;

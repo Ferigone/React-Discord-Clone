@@ -80,7 +80,7 @@ const ProtectedRoute = () => {
     if (lastSelectedServer?.server_id && !serverID && window.location.pathname !== '/app/settings') {
       navigate(`/app/server/${lastSelectedServer.server_id}`);
     }
-  }, [serverData, serverID, lastSelectedServer, dispatch, navigate]);
+  }, [serverData, serverID, lastSelectedServer, dispatch]);
 
   if (isUserLoading) return <div>Loading user data...</div>;
   if (userError) return <div>Error loading user data</div>;
