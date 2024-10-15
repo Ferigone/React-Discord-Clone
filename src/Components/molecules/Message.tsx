@@ -13,12 +13,6 @@ function Message({
   timestamp: Date;
   message: string;
 }) {
-  const isSameDay = () => {
-    return (
-      dayjs(timestamp).format("DD-MM-YYYY") === dayjs().format("DD-MM-YYYY")
-    );
-  };
-
   return (
     <div className="message flex items-center p-3 px-8 transition-colors duration-250 text-white w-full break-words relative hover:bg-gray-700">
       <div className="flex h-full">
@@ -27,7 +21,7 @@ function Message({
       <div className="block break-all ml-5">
         <h5 className="flex items-baseline">
           <Username username={user?.username || "Placeholder"} />
-          <Timestamp timestamp={timestamp} isSameDay={isSameDay} />
+          <Timestamp timestamp={timestamp} />
         </h5>
         <MessageContent message={message} />
       </div>

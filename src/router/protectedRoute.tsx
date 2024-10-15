@@ -50,6 +50,12 @@ const ProtectedRoute = () => {
 
   // Manage socket connection
   useEffect(() => {
+
+    if(!token) {
+      dispatch(logout());
+      navigate('/login');
+    }
+
     if (user) {
       dispatch(setUserData(user.user));
       socketService.init(token || '');
