@@ -31,7 +31,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({message}) => {
                 key={index}
                 src={part}
                 alt="Embedded content"
-                className="inline-block max-w-xs my-2 cursor-pointer"
+                className="inline-block max-w-xs my-2 cursor-pointer rounded-lg"
                 onClick={() => handleImageClick(part)}
             />
         );

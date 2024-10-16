@@ -11,30 +11,40 @@ import Sidebar from "@organisms/SideBar/Sidebar";
 import Chat from "@organisms/Chat/Chat";
 import NoServer from "@organisms/Utilities/NoServer";
 import Settings from "@pages/Settings";
-import { selectLastSelectedServer, setLastSelectedServer } from "@store/reducers/appSlice";
+import {
+  selectLastSelectedServer,
+  setLastSelectedServer,
+} from "@store/reducers/appSlice";
 import { getCookie } from "@utils/cookies"; // Import function to get token from cookies
 import { socketService } from "@services/socketService";
+import useUserStatus from "@hooks/useUserStatus";
 
 const ProtectedRoute = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
-  
+
+  useUserStatus();
+
   const lastSelectedServer = useSelector(selectLastSelectedServer);
-  const serverID = params['*']?.split('/')[1];
+  const serverID = params["*"]?.split("/")[1];
 
   // Get token from cookies
-  const token = getCookie('token'); // Assuming the cookie is named 'token'
+  const token = getCookie("token"); // Assuming the cookie is named 'token'
 
   // Fetch user data
-  const { isLoading: isUserLoading, data: user, error: userError } = useQuery({
-    queryKey: ['user'],
+  const {
+    isLoading: isUserLoading,
+    data: user,
+    error: userError,
+  } = useQuery({
+    queryKey: ["user"],
     queryFn: () =>
       fetch(`${import.meta.env.VITE_APP_API_URL}/user`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }).then((res) => res.json()),
     refetchOnWindowFocus: false,
@@ -42,7 +52,7 @@ const ProtectedRoute = () => {
 
   // Fetch server data if serverID exists
   const { data: serverData, error: serverError } = useQuery({
-    queryKey: ['server', serverID],
+    queryKey: ["server", serverID],
     queryFn: () => GetServer(serverID || ""),
     refetchOnWindowFocus: false,
     enabled: !!serverID,
@@ -50,15 +60,14 @@ const ProtectedRoute = () => {
 
   // Manage socket connection
   useEffect(() => {
-
-    if(!token) {
+    if (!token) {
       dispatch(logout());
-      navigate('/login');
+      navigate("/login");
     }
 
     if (user) {
       dispatch(setUserData(user.user));
-      socketService.init(token || '');
+      socketService.init(token || "");
 
       // Cleanup socket connection when component unmounts
       return () => {
@@ -77,7 +86,11 @@ const ProtectedRoute = () => {
       }
     }
 
-    if (lastSelectedServer?.server_id && !serverID && window.location.pathname !== '/app/settings') {
+    if (
+      lastSelectedServer?.server_id &&
+      !serverID &&
+      window.location.pathname !== "/app/settings"
+    ) {
       navigate(`/app/server/${lastSelectedServer.server_id}`);
     }
   }, [serverData, serverID, lastSelectedServer, dispatch]);
@@ -91,12 +104,15 @@ const ProtectedRoute = () => {
       <ServersList />
       <Routes>
         <Route path="/" element={<NoServer />} />
-        <Route path="/server/:server_id?/channel?/:channel_id?" element={
-          <>
-            <Sidebar />
-            <Chat />
-          </>
-        } />
+        <Route
+          path="/server/:server_id?/channel?/:channel_id?"
+          element={
+            <>
+              <Sidebar />
+              <Chat />
+            </>
+          }
+        />
         <Route path="/settings" element={<Settings />} />
       </Routes>
     </SocketContext.Provider>
