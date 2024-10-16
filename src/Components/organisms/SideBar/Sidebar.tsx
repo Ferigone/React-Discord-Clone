@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import SidebarChannel from "../SidebarChannel/SidebarChannel";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, selectUser } from "@store/reducers/userSlice";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+  cn,
+} from "@nextui-org/react";
 
 import { MdExpandMore } from "react-icons/md";
 import { Button } from "@nextui-org/react";
@@ -19,6 +27,7 @@ import GetChannels from "@utils/queries/GetChannels";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { socketService } from "@services/socketService";
+import User from "@molecules/User";
 
 function Sidebar() {
   const user = useSelector(selectUser);
@@ -50,6 +59,10 @@ function Sidebar() {
         setAddChannelModalState(false);
       });
     }
+  };
+
+  const handleChangeStatus = (status: string) => {
+    socketService.emit("changeStatus", status);
   };
 
   useEffect(() => {
@@ -109,24 +122,58 @@ function Sidebar() {
         />
       </div>
       <div className="h-[75px] flex flex-row items-center justify-between px-2 bg-primary rounded-t-2xl mx-2 mt-2">
-        <div className="flex flex-row items-center">
-          <img
-            src={
-              user?.photo ||
-              `https://placehold.co/200x200/000000/FFFFFF/png?font=roboto&text=${user?.username[0]}`
-            }
-            className="h-9 w-9 rounded-full mr-2"
-            alt=""
-          />
-          <div className="flex flex-col cursor-pointer">
-            <span className="text-white font-bold text-sm">
-              {user?.username}
-            </span>
-            <span className="text-gray text-xs font-semibold">
-              #{user?.id.substring(0, 6).toUpperCase()}
-            </span>
-          </div>
-        </div>
+        <Dropdown>
+          <DropdownTrigger>
+            <div>
+              <User user={user} showTag={true} />
+            </div>
+          </DropdownTrigger>
+          <DropdownMenu
+            variant="faded"
+            aria-label="Dropdown menu with description"
+          >
+            <DropdownSection title="Status" showDivider>
+              <DropdownItem
+                onClick={() => {
+                  handleChangeStatus("online");
+                }}
+              >
+                Online
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => {
+                  handleChangeStatus("dnd");
+                }}
+              >
+                Do not disturb
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => {
+                  handleChangeStatus("away");
+                }}
+              >
+                Away
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => {
+                  handleChangeStatus("offline");
+                }}
+              >
+                Offline
+              </DropdownItem>
+            </DropdownSection>
+            <DropdownSection>
+              <DropdownItem
+                onClick={() => {
+                  navigator.clipboard.writeText(user.id);
+                }}
+              >
+                Copy user ID
+              </DropdownItem>
+            </DropdownSection>
+          </DropdownMenu>
+        </Dropdown>
+
         <div className="flex flex-row items-center text-gray-500">
           <button className="h-8 w-8 flex justify-center items-center hover:bg-gray-700 rounded-md">
             <RiSettings5Fill

@@ -1,6 +1,8 @@
 // src/services/socketService.ts
 import { io, Socket } from "socket.io-client";
 import store from "@store/store"; // Import the Redux store
+import { setUserStatus } from "@store/reducers/userSlice";
+import { setServerUserStatus } from "@store/reducers/serverSlice";
 
 class SocketService {
   private socket: Socket | null = null;
@@ -47,6 +49,19 @@ class SocketService {
     this.socket.on("onlineUsers", (users) => {
       //   store.dispatch(setOnlineUsers(users)); // Dispatch Redux action for online users
     });
+
+    this.socket.on("statusChange", (status) => {
+      // Dispatch the action to update the user status
+      store.dispatch(setServerUserStatus({
+        userId: status.userId, // This should match the user ID in members.user.id
+        status: status.status, // The new status to set
+      }));
+
+      if(status.userId === store.getState().user.user.id) {
+        store.dispatch(setUserStatus(status.status));
+      }
+    });
+    
 
     // Add more listeners as needed
   }

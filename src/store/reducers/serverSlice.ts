@@ -31,11 +31,28 @@ export const serverSlice = createSlice({
         ...state,
         channels: [...state.channels, action.payload],
       }
+    },
+    setServerUserStatus: (state, action) => {
+      return {
+        ...state,
+        members: state.members.map((member: any) => {
+          if (member.user.id === action.payload.userId) { // Compare with member.user.id
+            return {
+              ...member,
+              user: {
+                ...member.user,
+                status: action.payload.status, // Update the status
+              },
+            };
+          }
+          return member;
+        }),
+      };
     }
   },
 });
 
-export const { setServerInfo, setServerChannels, addServerChannel } = serverSlice.actions;
+export const { setServerInfo, setServerChannels, addServerChannel, setServerUserStatus } = serverSlice.actions;
 
 export const selectServer = (state: any) => state.server;
 export const selectUsers = (state: any) => state.server.members;
