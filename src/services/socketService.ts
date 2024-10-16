@@ -2,7 +2,7 @@
 import { io, Socket } from "socket.io-client";
 import store from "@store/store"; // Import the Redux store
 import { setUserStatus } from "@store/reducers/userSlice";
-import { setServerUserStatus } from "@store/reducers/serverSlice";
+import { setServerUserStatus, addNewMessage } from "@store/reducers/serverListSlice";
 
 class SocketService {
   private socket: Socket | null = null;
@@ -36,7 +36,7 @@ class SocketService {
 
     // Listener for new messages
     this.socket.on("message", (message) => {
-      //   store.dispatch(addNewMessage(message)); // Dispatch Redux action to add new message
+      store.dispatch(addNewMessage(message)); // Dispatch Redux action to add new message
       console.log("New message received: ", message);
     });
 
@@ -52,16 +52,14 @@ class SocketService {
 
     this.socket.on("statusChange", (status) => {
       // Dispatch the action to update the user status
-      store.dispatch(setServerUserStatus({
-        userId: status.userId, // This should match the user ID in members.user.id
-        status: status.status, // The new status to set
-      }));
-
-      if(status.userId === store.getState().user.user.id) {
-        store.dispatch(setUserStatus(status.status));
-      }
+      // store.dispatch(setServerUserStatus({
+      //   userId: status.userId, // This should match the user ID in members.user.id
+      //   status: status.status, // The new status to set
+      // }));
+      // if(status.userId === store.getState().user.user.id) {
+      //   store.dispatch(setUserStatus(status.status));
+      // }
     });
-    
 
     // Add more listeners as needed
   }

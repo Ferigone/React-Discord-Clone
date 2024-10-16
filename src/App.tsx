@@ -8,9 +8,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to={"/app"} />} />
-          <Route path="/app/*" element={
-            <ProtectedRoute />
-          } />
+          <Route path="/app/*" element={<ProtectedRoute />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>

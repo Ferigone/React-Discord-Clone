@@ -11,19 +11,16 @@ import NewServerModal from "../Modals/NewServerModal";
 import { Tooltip } from "@nextui-org/react";
 
 import JoinServer from "@utils/queries/JoinServer";
-
-interface Server {
-  id: string;
-  name: string;
-}
+import { useSelector } from "react-redux";
+import { selectServerList } from "@store/reducers/serverListSlice";
 
 function ServersList() {
+  const servers = useSelector(selectServerList);
   const [modalState, setModalState] = useState<boolean>(false);
-  const [servers, setServers] = useState<Server[]>([]);
-  const socket = useContext(SocketContext);
 
   const params = useParams();
   const navigate = useNavigate();
+
 
   const handleAddServer = async (name: string, handleType: string) => {
     if (name.length < 3) return;
@@ -45,30 +42,6 @@ function ServersList() {
     }
   };
 
-  useEffect(() => {
-    const fetchServers = async () => {
-      try {
-        const res = await GetServer();
-        setServers(res.servers);
-        console.log(res.servers);
-      } catch (error) {
-        console.error("Error fetching servers:", error);
-      }
-    };
-
-    fetchServers();
-
-    const handleServerEvent = (data: Server) => {
-      setServers((prev) => [...prev, data]);
-    };
-
-    socket.on("server", handleServerEvent);
-
-    return () => {
-      socket.off("server", handleServerEvent);
-    };
-  }, [socket]);
-
   return (
     <>
       <div className="w-[72px] min-w-[72px] bg-primary flex flex-col items-center py-3">
@@ -78,7 +51,7 @@ function ServersList() {
         <div className="bg-[#2D2F32] h-[2px] w-[30%] mb-2" />
 
         <div className="block overflow-auto no-scrollbar">
-          {servers.map((server) => (
+          {servers?.map((server) => (
             <Tooltip
               content={server.name}
               placement="right"

@@ -8,52 +8,38 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownItem,
-  cn,
 } from "@nextui-org/react";
+import { FaCog } from "react-icons/fa";
+import { FaCirclePlus } from "react-icons/fa6";
 
 import { MdExpandMore } from "react-icons/md";
-import { Button } from "@nextui-org/react";
 import { TbLogout } from "react-icons/tb";
-import { RiSettings5Fill } from "react-icons/ri";
-import {
-  selectChannels,
-  selectServer,
-  setServerChannels,
-  addServerChannel,
-} from "@store/reducers/serverSlice";
+import { RiSettings5Fill, RiFolderAddFill } from "react-icons/ri";
+import { MdGroupAdd } from "react-icons/md";
+import { TbDoorExit } from "react-icons/tb";
+
 import CreateChannel from "@utils/queries/CreateChannel";
 import NewChannelModal from "../Modals/NewChannelModal";
-import GetChannels from "@utils/queries/GetChannels";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { socketService } from "@services/socketService";
 import User from "@molecules/User";
+import { addServerChannel, selectServerById, selectServerChannels } from "@store/reducers/serverListSlice";
 
 function Sidebar() {
+  const { server_id } = useParams();
   const user = useSelector(selectUser);
-  const server = useSelector(selectServer);
-  const channels = useSelector(selectChannels);
+  const server = useSelector(selectServerById(server_id || ""));
+  const channels = useSelector(selectServerChannels(server_id || ""));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [addChannelModalState, setAddChannelModalState] = useState(false);
-  useQuery({
-    queryKey: ["channels", server.id],
-    queryFn: () => {
-      GetChannels(server._id).then((data) => {
-        dispatch(setServerChannels(data));
-      });
-      return channels;
-    },
-    refetchOnWindowFocus: false,
-    enabled: !!server._id,
-  });
 
   const handleAddChannel = (name: string) => {
     if (name) {
       CreateChannel({
-        serverId: server.id,
+        serverId: server?.id,
         name,
       }).then((data) => {
         setAddChannelModalState(false);
@@ -76,7 +62,7 @@ function Sidebar() {
   useEffect(() => {
     socketService.on("newChannel", (channel) => {
       console.log(channel);
-      dispatch(addServerChannel(channel));
+      dispatch(addServerChannel({ serverId: server.id, channel }));
     });
 
     return () => {
@@ -87,25 +73,40 @@ function Sidebar() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col bg-primary min-w-[240px] w-[240px] mx-2 rounded-b-2xl h-full">
-        <div className="flex flex-row justify-between items-center px-5 h-[55px] text-white border-b border-black cursor-pointer duration-100">
-          <h4 className="font-semibold">{server.name}</h4>
-          <MdExpandMore className="w-6 h-6" />
-        </div>
+        <Dropdown>
+          <DropdownTrigger>
+            <div className="flex flex-row justify-between items-center px-5 h-[55px] text-white border-b border-black cursor-pointer duration-100">
+              <h4 className="font-semibold">{server.name}</h4>
+              <MdExpandMore className="w-6 h-6" />
+            </div>
+          </DropdownTrigger>
+          <DropdownMenu>
+            <DropdownSection className="py-2">
+              <DropdownItem endContent={<FaCog />}>
+                <span className="font-bold m-2">Server settings</span>
+              </DropdownItem>
+              <DropdownItem endContent={<MdGroupAdd />}>
+                <span className="font-bold m-2">Invite people</span>
+              </DropdownItem>
+              <DropdownItem
+                endContent={<FaCirclePlus />}
+                onClick={() => {
+                  setAddChannelModalState(true);
+                }}
+              >
+                <span className="font-bold m-2">Create channel</span>
+              </DropdownItem>
+              <DropdownItem showDivider endContent={<RiFolderAddFill />}>
+                <span className="font-bold m-2">Create category</span>
+              </DropdownItem>
+              <DropdownItem endContent={<TbDoorExit />} className="text-danger">
+                <span className="font-bold m-2">Leave server</span>
+              </DropdownItem>
+            </DropdownSection>
+          </DropdownMenu>
+        </Dropdown>
 
         <div className="flex-1 overflow-y-auto">
-          {" "}
-          {/* Flex-grow and scrolling wrapper */}
-          <div className="w-full px-3 my-5">
-            <Button
-              size="sm"
-              className="w-full bg-secondary text-white font-bold"
-              onPress={() => {
-                setAddChannelModalState(true);
-              }}
-            >
-              Create Channel
-            </Button>
-          </div>
           <div className="px-2 overflow-y-auto flex flex-col-reverse flex-grow scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
             <div className="">
               {channels?.map(({ id, name }: { _id: string; name: string }) => (

@@ -7,17 +7,17 @@ import "./index.css";
 import "./assets/fonts/stylesheet.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { NextUIProvider } from "@nextui-org/react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({});
 
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <NextUIProvider>
-          <App />
-        </NextUIProvider>
-      </Provider>
-    </QueryClientProvider>
-  </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <ReactQueryDevtools initialIsOpen={true} />
+    <Provider store={store}>
+      <NextUIProvider>
+        <App />
+      </NextUIProvider>
+    </Provider>
+  </QueryClientProvider>
 );

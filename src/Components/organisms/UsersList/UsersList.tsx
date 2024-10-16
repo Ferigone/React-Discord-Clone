@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
-import { selectUsers } from "@store/reducers/serverSlice";
-import { Avatar } from "@nextui-org/react";
 import User from "@molecules/User";
+import { selectServerMembers } from "@store/reducers/serverListSlice";
+import { useParams } from "react-router-dom";
 
 function UsersList() {
-  const users = useSelector(selectUsers);
+  const { server_id } = useParams();
+  const users = useSelector(selectServerMembers(server_id));
 
   return (
     <div className="list__container min-w-[240px] bg-primary ml-2 py-8">
