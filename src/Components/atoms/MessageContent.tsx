@@ -96,6 +96,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({message}) => {
               dangerouslySetInnerHTML={{
                 __html: unescape(part.replace(/\n/g, "<br />")),
               }}
+              className="font-semibold"
           ></span>
       );
     });

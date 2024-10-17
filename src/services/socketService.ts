@@ -51,14 +51,9 @@ class SocketService {
     });
 
     this.socket.on("statusChange", (status) => {
-      // Dispatch the action to update the user status
-      // store.dispatch(setServerUserStatus({
-      //   userId: status.userId, // This should match the user ID in members.user.id
-      //   status: status.status, // The new status to set
-      // }));
-      // if(status.userId === store.getState().user.user.id) {
-      //   store.dispatch(setUserStatus(status.status));
-      // }
+      if(status.userId === store.getState().user.user.id) {
+        store.dispatch(setUserStatus(status.status));
+      }
     });
 
     // Add more listeners as needed
