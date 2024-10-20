@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalBody,
-  ModalFooter,
-} from "@nextui-org/modal";
-
+import { Modal, ModalContent, ModalBody, ModalFooter } from "@nextui-org/modal";
 import { Button, Input, Tab, Tabs } from "@nextui-org/react";
 import SelectAvatar from "@molecules/SelectAvatar";
 
@@ -18,25 +12,27 @@ interface Props {
 
 const NewServerModal = ({ visible, title, setVisible, addServer }: Props) => {
   const [name, setName] = React.useState("");
-  const [modalStatus, setModalStatus] = React.useState("create");
+  const [modalStatus, setModalStatus] = React.useState<"create" | "join">(
+    "create"
+  );
   const [error, setError] = React.useState<string | null>(null);
 
   const closeHandler = () => {
     setVisible(false);
     setModalStatus("create");
     setError(null); // Reset the error message on close
+    setName(""); // Reset name on modal close
   };
 
   const handleAddServer = () => {
-    // Input validation for both "create" and "join"
-    if (modalStatus === "create" && name.trim().length === 0) {
-      setError("Server name cannot be empty.");
-      return;
-    } else if (modalStatus === "join" && name.trim().length === 0) {
-      setError("Invite code cannot be empty.");
+    if (name.trim().length === 0) {
+      setError(
+        modalStatus === "create"
+          ? "Server name cannot be empty."
+          : "Invite code cannot be empty."
+      );
       return;
     }
-    // No errors, proceed
     setError(null);
     addServer(name, modalStatus);
     setName("");
@@ -55,7 +51,11 @@ const NewServerModal = ({ visible, title, setVisible, addServer }: Props) => {
           <Tabs
             size="lg"
             selectedKey={modalStatus}
-            onSelectionChange={setModalStatus}
+            onSelectionChange={(key) => {
+              setModalStatus(key as "create" | "join")
+              setError(null);
+              setName("")
+            }}
             variant="bordered"
             classNames={{
               tabList: "flex justify-between w-full",
@@ -69,7 +69,6 @@ const NewServerModal = ({ visible, title, setVisible, addServer }: Props) => {
               title="Create Server"
               className="flex flex-col justify-center items-center gap-2"
             >
-              {/* Simple text that user can create server */}
               <h1 className="font-bold text-xl">Personalize your server</h1>
               <p className="font-semibold text-center">
                 Customize your server with a name, image, and more to make it
@@ -85,7 +84,6 @@ const NewServerModal = ({ visible, title, setVisible, addServer }: Props) => {
               title="Join Server"
               className="flex flex-col justify-center items-center gap-2"
             >
-              {/* Simple text that user can join server */}
               <h1 className="font-bold text-xl">Join a server</h1>
               <p className="font-semibold">
                 Enter an invite code to join an existing server.
@@ -97,6 +95,7 @@ const NewServerModal = ({ visible, title, setVisible, addServer }: Props) => {
             fullWidth
             color="primary"
             size="lg"
+            isClearable
             classNames={{
               label: "text-black/50 dark:text-white/90",
               input: ["text-white/90", "placeholder:text-white/60"],
@@ -110,16 +109,17 @@ const NewServerModal = ({ visible, title, setVisible, addServer }: Props) => {
                 "!cursor-text",
                 "data-[hover=true]:bg-content2",
               ],
+              clearButton: "text-white"
             }}
             placeholder={
-              modalStatus === "create"
-                ? "Server name"
-                : "Invite code or link"
+              modalStatus === "create" ? "Server name" : "Invite code or link"
             }
             value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              setError(null); // Reset the error message on change
+            onValueChange={(value) => {
+              setName(value);
+              if (value.trim().length > 0) {
+                setError(null); // Only clear error if input becomes valid
+              }
             }}
             isInvalid={!!error}
             errorMessage={error}
@@ -137,5 +137,6 @@ const NewServerModal = ({ visible, title, setVisible, addServer }: Props) => {
     </Modal>
   );
 };
+
 
 export default NewServerModal;

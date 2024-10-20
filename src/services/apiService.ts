@@ -1,6 +1,7 @@
 // src/services/apiService.ts
 
 import { getCookie } from "@utils/cookies";
+import { toast } from "react-toastify";
 
 // Base API Service for handling common logic
 const apiService = {
@@ -19,10 +20,9 @@ const apiService = {
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
-
+      
       return await response.json();
     } catch (error) {
-      console.error("API GET Error:", error);
       throw error;
     }
   },

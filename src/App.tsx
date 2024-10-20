@@ -1,6 +1,8 @@
 import Login from "@pages/login/Login";
 import ProtectedRoute from "./router/protectedRoute";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer theme="dark" />
     </div>
   );
 }

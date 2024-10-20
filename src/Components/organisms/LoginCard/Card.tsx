@@ -8,9 +8,10 @@ import { FooterText } from "@atoms/FooterText";
 
 type CardProps = {
   onSubmit: FormEventHandler;
+  isLoading?: Boolean;
 };
 
-const Card: React.FC<CardProps> = ({ onSubmit }) => {
+const Card: React.FC<CardProps> = ({ onSubmit, isLoading }) => {
   return (
     <div className="flex flex-col justify-center items-center bg-primary p-[32px] rounded-[20px] z-10">
       <Header />
@@ -22,7 +23,7 @@ const Card: React.FC<CardProps> = ({ onSubmit }) => {
         <Label htmlFor="password">HASŁO</Label>
         <Input type="password" id="password" required />
         <Link href="">Nie pamiętasz hasła?</Link>
-        <Button>Zaloguj się</Button>
+        <Button isLoading={isLoading}>Zaloguj się</Button>
         <FooterText />
       </form>
     </div>
