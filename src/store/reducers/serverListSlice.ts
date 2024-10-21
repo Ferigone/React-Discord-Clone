@@ -129,11 +129,16 @@ export const {
   removeServerChannel,
   addServerUser,
   setServerUserStatus,
-  addNewMessage
+  addNewMessage,
 } = serverListSlice.actions;
 
 export const selectServerById = (serverId: string) => (state) =>
   state.servers.find((server) => server.id === serverId);
+
+export const selectServerName = (serverId: string) => (state) => {
+  const server = state.servers.find((server) => server.id === serverId);
+  return server ? server.name : "";
+}
 
 export const selectServerList = (state: { servers: ServerListState }) =>
   state.servers;
@@ -169,5 +174,10 @@ export const selectChannelMessages =
 
     return channel?.messages;
   };
+
+export const selectCustomEmojis = (serverId: string) => (state) => {
+  const server = state.servers.find((server) => server.id === serverId);
+  return server ? server.customEmojis : [];
+};
 
 export default serverListSlice.reducer;

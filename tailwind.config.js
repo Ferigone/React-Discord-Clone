@@ -26,6 +26,7 @@ module.exports = {
         'primary-text': '#576175',
         'default-200': '#1C1F26',
         'default-100': '#1C1F26',
+        'primary-hover': '#3F3F46'
       }
     },
   },

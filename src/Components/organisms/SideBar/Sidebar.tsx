@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownItem,
+  useDisclosure,
 } from "@nextui-org/react";
 import { FaCog } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
@@ -23,7 +24,12 @@ import NewChannelModal from "../Modals/NewChannelModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { socketService } from "@services/socketService";
 import User from "@molecules/User";
-import { addServerChannel, selectServerById, selectServerChannels } from "@store/reducers/serverListSlice";
+import {
+  addServerChannel,
+  selectServerById,
+  selectServerChannels,
+} from "@store/reducers/serverListSlice";
+import ServerSettings from "@organisms/Modals/ServerSettings";
 
 function Sidebar() {
   const { server_id } = useParams();
@@ -33,6 +39,8 @@ function Sidebar() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [addChannelModalState, setAddChannelModalState] = useState(false);
 
@@ -82,7 +90,12 @@ function Sidebar() {
           </DropdownTrigger>
           <DropdownMenu>
             <DropdownSection className="py-2">
-              <DropdownItem endContent={<FaCog />}>
+              <DropdownItem
+                endContent={<FaCog />}
+                onClick={() => {
+                  onOpen();
+                }}
+              >
                 <span className="font-bold m-2">Server settings</span>
               </DropdownItem>
               <DropdownItem endContent={<MdGroupAdd />}>
@@ -174,6 +187,8 @@ function Sidebar() {
             </DropdownSection>
           </DropdownMenu>
         </Dropdown>
+
+        <ServerSettings isOpen={isOpen} onClose={onClose} />
 
         <div className="flex flex-row items-center text-gray-500">
           <button className="h-8 w-8 flex justify-center items-center hover:bg-gray-700 rounded-md">

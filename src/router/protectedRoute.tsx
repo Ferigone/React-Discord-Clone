@@ -14,6 +14,7 @@ import { socketService } from "@services/socketService";
 import useUserStatus from "@hooks/useUserStatus";
 import GetServers from "@utils/queries/GetServers";
 import { setServerList } from "@store/reducers/serverListSlice";
+import { CircularProgress } from "@nextui-org/react";
 
 const ProtectedRoute = () => {
   const dispatch = useDispatch();
@@ -71,7 +72,19 @@ const ProtectedRoute = () => {
 
   if (isUserLoading || isServerListLoading)
     return (
-      <div className="flex justify-center items-center w-full">Loading</div>
+      <div className="flex justify-center items-center w-full">
+        <CircularProgress
+          classNames={{
+            svg: "w-36 h-36 drop-shadow-md",
+            indicator: "stroke-blue",
+            track: "stroke-white/10",
+            value: "text-3xl font-semibold text-white",
+            label: "text-white font-semibold",
+          }}
+          label="Initializing..."
+          
+        />
+      </div>
     );
 
   if (userError) return <div>Error loading user data</div>;

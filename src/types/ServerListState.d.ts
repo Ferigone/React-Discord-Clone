@@ -5,6 +5,12 @@ interface User {
   status: string;
 }
 
+interface CustomEmoji {
+  names: string[];
+  imgUrl: string;
+  id: string;
+}
+
 // Type for a message in a channel
 interface Message {
   id: string;
@@ -26,6 +32,7 @@ interface Server {
   owner: User;
   channels: Channel[];
   members: User[];
+  customEmojis: CustomEmoji[];
 }
 
 // The complete state type
