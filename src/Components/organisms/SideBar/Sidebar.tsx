@@ -44,11 +44,12 @@ function Sidebar() {
 
   const [addChannelModalState, setAddChannelModalState] = useState(false);
 
-  const handleAddChannel = (name: string) => {
+  const handleAddChannel = (name: any) => {
+    console.log("name", name);
     if (name) {
       CreateChannel({
         serverId: server?.id,
-        name,
+        ...name,
       }).then((data) => {
         setAddChannelModalState(false);
       });
@@ -122,9 +123,24 @@ function Sidebar() {
         <div className="flex-1 overflow-y-auto">
           <div className="px-2 overflow-y-auto flex flex-col-reverse flex-grow scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
             <div className="">
-              {channels?.map(({ id, name }: { _id: string; name: string }) => (
-                <SidebarChannel key={id} id={id} channelName={name} />
-              ))}
+              {channels?.map(
+                ({
+                  id,
+                  name,
+                  type,
+                }: {
+                  _id: string;
+                  name: string;
+                  type: string;
+                }) => (
+                  <SidebarChannel
+                    key={id}
+                    id={id}
+                    channelName={name}
+                    type={type}
+                  />
+                )
+              )}
             </div>
           </div>
         </div>

@@ -57,7 +57,12 @@ const NewChannelModal = ({ visible, title, setVisible, addChannel }: Props) => {
   };
 
   const handleAddChannel = () => {
-    addChannel(name);
+    addChannel({
+      name,
+      type: channelType,
+      isPrivate,
+    })
+    
     setName("");
     setChannelType("text");
     setIsPrivate(false);
