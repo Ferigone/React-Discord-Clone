@@ -13,7 +13,7 @@ const GetChannelInfo = async (server_id: string): Promise<any> => {
 
     // Return the channel info from the response
     return data.channel;
-  } catch (error) {
+  } catch (error: any) {
     // Handle error and throw it for the caller to manage
     throw new Error("Failed to fetch channel info: " + error.message);
   }

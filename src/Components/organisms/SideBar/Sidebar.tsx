@@ -129,7 +129,7 @@ function Sidebar() {
                   name,
                   type,
                 }: {
-                  _id: string;
+                  id: string;
                   name: string;
                   type: string;
                 }) => (

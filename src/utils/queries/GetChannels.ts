@@ -11,7 +11,7 @@ const GetChannels = async (server_id: string | undefined): Promise<any> => {
 
     // Return the channels from the response
     return data.channels;
-  } catch (error) {
+  } catch (error: any) {
     // Handle error and throw it for the caller to manage
     throw new Error("Failed to fetch channels: " + error.message);
   }

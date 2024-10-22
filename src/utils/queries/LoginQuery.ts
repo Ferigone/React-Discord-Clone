@@ -7,13 +7,7 @@ type LoginParams = {
   password: string;
 };
 
-type LoginResponse = {
-  token?: string;
-  message?: string;
-  status?: string;
-};
-
-const LoginQuery = async (params: LoginParams): Promise<LoginResponse> => {
+const LoginQuery = async (params: LoginParams): Promise<any> => {
   try {
     // Use apiService to send a POST request
     const data = await apiService.post(
@@ -23,7 +17,7 @@ const LoginQuery = async (params: LoginParams): Promise<LoginResponse> => {
 
     // Return the response data (e.g., token, message)
     return data;
-  } catch (error) {
+  } catch (error: any) {
     toast.error(
       error.message ||
         "Encountered server error, please contact customer service"

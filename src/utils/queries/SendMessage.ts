@@ -11,7 +11,7 @@ const SendMessage = async (message: string, channelId: string): Promise<any> => 
 
     // Return the response data
     return data;
-  } catch (error) {
+  } catch (error: any) {
     // Handle and throw the error to be managed by the caller
     throw new Error("Failed to send message: " + error.message);
   }

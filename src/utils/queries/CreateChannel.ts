@@ -13,7 +13,7 @@ const CreateChannel = async (params: Params): Promise<any> => {
     
     // Return the response from the server
     return data;
-  } catch (error) {
+  } catch (error: any) {
     // Handle and throw error for the caller to manage
     throw new Error("Failed to create channel: " + error.message);
   }

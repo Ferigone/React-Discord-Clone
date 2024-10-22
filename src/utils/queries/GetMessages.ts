@@ -10,7 +10,7 @@ const GetMessages = async (channel_id: string | undefined, message_index: number
     
     // Return the messages from the API response
     return data.messages;
-  } catch (error) {
+  } catch (error: any) {
     // Throw the error to be handled by the caller
     throw new Error("Failed to fetch messages: " + error.message);
   }

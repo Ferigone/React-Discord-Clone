@@ -8,7 +8,6 @@ import ServersList from "@organisms/ServersList/ServersList";
 import Sidebar from "@organisms/SideBar/Sidebar";
 import Chat from "@organisms/Chat/Chat";
 import NoServer from "@organisms/Utilities/NoServer";
-import Settings from "@pages/Settings";
 import { getCookie } from "@utils/cookies"; // Import function to get token from cookies
 import { socketService } from "@services/socketService";
 import useUserStatus from "@hooks/useUserStatus";
