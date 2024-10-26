@@ -1,37 +1,102 @@
-import React from "react";
+import React from 'react';
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Switch } from "@nextui-org/switch";
+import { Button, Input, Textarea } from "@nextui-org/react";
 
-const Beta = () => {
+function BetaSettings() {
   return (
-    <div>
-      Dołącz do programu Beta: Opcja umożliwiająca użytkownikom zapisanie się do
-      programu beta, aby mogli testować nowe funkcje przed ich oficjalnym
-      wydaniem. Informacje o korzyściach i ryzykach związanych z używaniem
-      wersji beta (np. potencjalne błędy, niestabilność). Zgłaszanie opinii i
-      błędów: Funkcja pozwalająca użytkownikom zgłaszać opinie na temat funkcji
-      beta, dzielić się spostrzeżeniami oraz zgłaszać błędy bezpośrednio do
-      zespołu wsparcia. Szybki formularz zgłoszeniowy lub możliwość wysyłania
-      opinii z poziomu aplikacji. Podgląd nadchodzących funkcji: Informacje o
-      funkcjach, które są aktualnie testowane w wersji beta oraz krótki opis ich
-      działania. Opcja aktywacji/dezaktywacji poszczególnych funkcji beta, aby
-      użytkownik mógł wybrać te, które chce testować. Historia zmian i notatki
-      do wersji Beta: Sekcja zawierająca historię zmian wprowadzonych w wersji
-      beta, co umożliwia śledzenie nowości i poprawek wprowadzonych w kolejnych
-      aktualizacjach. Notatki od programistów z informacjami o kluczowych
-      aktualizacjach i znanych problemach w wersji beta. Automatyczne
-      aktualizacje wersji Beta: Opcja automatycznego pobierania aktualizacji
-      wersji beta, aby użytkownicy mieli dostęp do najnowszych funkcji bez
-      potrzeby ręcznego aktualizowania. Możliwość wyłączenia automatycznych
-      aktualizacji i otrzymywania powiadomień, kiedy nowa wersja beta jest
-      dostępna. Powrót do stabilnej wersji: Opcja powrotu do stabilnej wersji
-      aplikacji dla użytkowników, którzy napotkali problemy w wersji beta lub
-      wolą bardziej stabilne środowisko. Informacje o tym, że niektóre dane lub
-      ustawienia mogą być resetowane przy powrocie do stabilnej wersji.
-      Oświadczenie dotyczące wersji Beta: Krótkie oświadczenie lub
-      przypomnienie, że wersja beta może zawierać błędy i jest przeznaczona do
-      testowania, co może wpłynąć na stabilność aplikacji. Informacja, że wersja
-      beta może być wyłączona lub ograniczona w zależności od rozwoju aplikacji.
+    <div className="space-y-6 p-6">
+      
+      {/* Dołącz do programu Beta */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Dołącz do Programu Beta</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Zapisz się do programu beta</Switch>
+          <p className="text-sm text-gray-600">
+            Dołączając do programu beta, możesz testować nowe funkcje przed ich oficjalnym wydaniem.
+            Wersje beta mogą zawierać błędy i być niestabilne.
+          </p>
+        </CardBody>
+      </Card>
+
+      {/* Zgłaszanie opinii i błędów */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Zgłaszanie Opinii i Błędów</CardHeader>
+        <CardBody className="space-y-4">
+          <Textarea label="Twoja opinia lub zgłoszenie błędu" placeholder="Opisz swoje doświadczenia..." className="w-full" />
+          <Button color="primary">Wyślij opinię</Button>
+          <p className="text-sm text-gray-600">
+            Pomóż nam ulepszyć aplikację, dzieląc się swoimi opiniami lub zgłaszając problemy.
+          </p>
+        </CardBody>
+      </Card>
+
+      {/* Podgląd nadchodzących funkcji */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Podgląd Nadchodzących Funkcji</CardHeader>
+        <CardBody className="space-y-4">
+          <div className="space-y-2">
+            <p className="font-medium">Funkcja: Tryb ciemny 2.0</p>
+            <p className="text-sm text-gray-600">Nowa wersja trybu ciemnego z dodatkowymi opcjami personalizacji.</p>
+            <Switch>Aktywuj tryb ciemny 2.0</Switch>
+          </div>
+          <div className="space-y-2 mt-4">
+            <p className="font-medium">Funkcja: Rozszerzona historia powiadomień</p>
+            <p className="text-sm text-gray-600">Możliwość przeglądania historii powiadomień w jednym miejscu.</p>
+            <Switch>Aktywuj rozszerzoną historię powiadomień</Switch>
+          </div>
+        </CardBody>
+      </Card>
+
+      {/* Historia zmian i notatki do wersji Beta */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Historia Zmian i Notatki do Wersji Beta</CardHeader>
+        <CardBody className="space-y-4">
+          <div className="space-y-2">
+            <p className="font-medium">Wersja 1.2.0-beta</p>
+            <p className="text-sm text-gray-600">- Dodano nową opcję trybu ciemnego 2.0</p>
+            <p className="text-sm text-gray-600">- Poprawiono stabilność połączeń audio</p>
+            <p className="text-sm text-gray-600">Znane problemy: Drobnym błędem jest znikająca ikona w menu.</p>
+          </div>
+        </CardBody>
+      </Card>
+
+      {/* Automatyczne aktualizacje wersji Beta */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Automatyczne Aktualizacje Wersji Beta</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch>Włącz automatyczne aktualizacje wersji beta</Switch>
+          <Switch>Powiadomienia o nowych aktualizacjach wersji beta</Switch>
+        </CardBody>
+      </Card>
+
+      {/* Powrót do stabilnej wersji */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Powrót do Stabilnej Wersji</CardHeader>
+        <CardBody className="space-y-4">
+          <p className="text-sm text-gray-600">
+            Jeśli napotykasz problemy w wersji beta, możesz wrócić do stabilnej wersji aplikacji. Uwaga: niektóre ustawienia mogą zostać zresetowane.
+          </p>
+          <Button color="warning">Powrót do stabilnej wersji</Button>
+        </CardBody>
+      </Card>
+
+      {/* Oświadczenie dotyczące wersji Beta */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Oświadczenie dotyczące Wersji Beta</CardHeader>
+        <CardBody className="space-y-4">
+          <p className="text-sm text-gray-600">
+            Wersja beta aplikacji jest przeznaczona wyłącznie do testowania i może zawierać błędy. Udział w programie beta może być czasowo ograniczony w zależności od rozwoju aplikacji.
+          </p>
+        </CardBody>
+      </Card>
+
+      {/* Przycisk zapisu */}
+      <Button color="primary" className="mt-6 w-full md:w-auto self-center">
+        Zapisz ustawienia
+      </Button>
     </div>
   );
-};
+}
 
-export default Beta;
+export default BetaSettings;

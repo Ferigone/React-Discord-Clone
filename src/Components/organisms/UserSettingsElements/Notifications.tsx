@@ -1,37 +1,121 @@
-import React from "react";
+import React from 'react';
+import { Card, CardHeader, CardBody } from "@nextui-org/card";
+import { Switch } from "@nextui-org/switch";
+import { Select, SelectItem } from "@nextui-org/select";
+import { Slider, Button } from "@nextui-org/react";
 
-const Notifications = () => {
+function NotificationsSettings() {
   return (
-    <div>
-      Ustawienia powiadomień ogólnych: Opcja włączania lub wyłączania wszystkich
-      powiadomień jednym kliknięciem. Wybór poziomu szczegółowości powiadomień,
-      np. tylko najważniejsze powiadomienia, wszystkie powiadomienia lub tylko
-      priorytetowe. Powiadomienia o wiadomościach: Opcje powiadomień o nowych
-      wiadomościach: natychmiastowe, co pewien czas (np. co godzinę) lub
-      całkowite wyłączenie. Możliwość wyciszenia powiadomień od wybranych
-      kontaktów lub grup. Dźwięki powiadomień: Wybór dźwięku powiadomienia lub
-      jego wyciszenie dla powiadomień o wiadomościach, połączeniach i innych
-      zdarzeniach. Możliwość ustawienia różnych dźwięków dla różnych typów
-      powiadomień (np. inny dźwięk dla wiadomości prywatnych, inny dla
-      grupowych). Powiadomienia o połączeniach głosowych/wideo: Opcja włączenia
-      powiadomień przychodzących połączeń głosowych i wideo. Możliwość
-      ustawienia, kiedy powiadomienia o połączeniach mają się pojawiać (np.
-      tylko od znajomych lub z wybranych grup). Powiadomienia push: Opcja
-      otrzymywania powiadomień push na urządzenia mobilne. Możliwość
-      ograniczenia powiadomień push do najważniejszych zdarzeń lub określonych
-      godzin (np. „tryb nie przeszkadzać” w nocy). Podgląd powiadomień: Opcja
-      włączenia lub wyłączenia podglądu treści wiadomości w powiadomieniach (dla
-      prywatności). Możliwość dostosowania, czy podgląd treści ma być widoczny
-      na zablokowanym ekranie. Harmonogram powiadomień: Funkcja ustawienia
-      harmonogramu, kiedy powiadomienia mają być włączone lub wyciszone, np. w
-      godzinach pracy lub w nocy. Automatyczne wyciszenie powiadomień w trybie
-      „do not disturb” podczas spotkań lub innych ważnych wydarzeń.
-      Powiadomienia o aktywności znajomych: Możliwość otrzymywania powiadomień,
-      gdy znajomy jest online, dołącza do czatu grupowego lub udostępnia coś
-      nowego. Opcja wyłączenia tych powiadomień lub ograniczenia ich do
-      wybranych kontaktów.
+    <div className="space-y-6 p-6">
+      
+      {/* Ustawienia powiadomień ogólnych */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Powiadomienia Ogólne</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Włącz/Wyłącz wszystkie powiadomienia</Switch>
+          <Select label="Poziom szczegółowości powiadomień" className="w-full">
+            <SelectItem key="all">Wszystkie powiadomienia</SelectItem>
+            <SelectItem key="important">Tylko najważniejsze</SelectItem>
+            <SelectItem key="priority">Priorytetowe</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Powiadomienia o wiadomościach */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Powiadomienia o Wiadomościach</CardHeader>
+        <CardBody className="space-y-4">
+          <Select label="Częstotliwość powiadomień" className="w-full">
+            <SelectItem key="immediate">Natychmiastowe</SelectItem>
+            <SelectItem key="hourly">Co godzinę</SelectItem>
+            <SelectItem key="off">Wyłącz</SelectItem>
+          </Select>
+          <Select label="Wycisz powiadomienia od" className="w-full">
+            <SelectItem key="selectedContacts">Wybrane kontakty</SelectItem>
+            <SelectItem key="selectedGroups">Wybrane grupy</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Dźwięki powiadomień */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Dźwięki Powiadomień</CardHeader>
+        <CardBody className="space-y-4">
+          <Select label="Dźwięk dla wiadomości prywatnych" className="w-full">
+            <SelectItem key="sound1">Dźwięk 1</SelectItem>
+            <SelectItem key="sound2">Dźwięk 2</SelectItem>
+            <SelectItem key="mute">Wycisz</SelectItem>
+          </Select>
+          <Select label="Dźwięk dla wiadomości grupowych" className="w-full">
+            <SelectItem key="sound1">Dźwięk 1</SelectItem>
+            <SelectItem key="sound2">Dźwięk 2</SelectItem>
+            <SelectItem key="mute">Wycisz</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Powiadomienia o połączeniach głosowych/wideo */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Powiadomienia o Połączeniach</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Powiadomienia o przychodzących połączeniach</Switch>
+          <Select label="Powiadomienia od" className="w-full">
+            <SelectItem key="friends">Znajomi</SelectItem>
+            <SelectItem key="groups">Wybrane grupy</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Powiadomienia push */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Powiadomienia Push</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Otrzymuj powiadomienia push</Switch>
+          <Select label="Tryb 'Nie przeszkadzać'" className="w-full">
+            <SelectItem key="night">W nocy</SelectItem>
+            <SelectItem key="workHours">Godziny pracy</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Podgląd powiadomień */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Podgląd Powiadomień</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Włącz podgląd treści wiadomości</Switch>
+          <Switch>Podgląd treści na zablokowanym ekranie</Switch>
+        </CardBody>
+      </Card>
+
+      {/* Harmonogram powiadomień */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Harmonogram Powiadomień</CardHeader>
+        <CardBody className="space-y-4">
+          <Select label="Harmonogram" className="w-full">
+            <SelectItem key="work">Godziny pracy</SelectItem>
+            <SelectItem key="night">W nocy</SelectItem>
+          </Select>
+          <Switch defaultSelected>Automatyczne wyciszenie w trybie 'Do Not Disturb'</Switch>
+        </CardBody>
+      </Card>
+
+      {/* Powiadomienia o aktywności znajomych */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Powiadomienia o Aktywności Znajomych</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Powiadomienia o aktywności znajomych</Switch>
+          <Select label="Ogranicz powiadomienia do" className="w-full">
+            <SelectItem key="selectedContacts">Wybrani znajomi</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Przycisk zapisu */}
+      <Button color="primary" className="mt-6 w-full md:w-auto self-center">
+        Zapisz ustawienia
+      </Button>
     </div>
   );
-};
+}
 
-export default Notifications;
+export default NotificationsSettings;

@@ -1,35 +1,148 @@
 import React from "react";
+import { Card, CardHeader, CardBody } from "@nextui-org/card";
+import { Switch } from "@nextui-org/switch";
+import { Select, SelectItem } from "@nextui-org/select";
+import { Slider, Button } from "@nextui-org/react";
 
-const TextImages = () => {
+function TextAndImagesSettings() {
   return (
-    <div>
-      Wyświetlanie obrazów i multimediów: Opcja automatycznego ładowania obrazów
-      i multimediów lub ich wyłączania, aby oszczędzać transfer danych.
-      Możliwość wyświetlania lub ukrywania podglądów linków przesyłanych w
-      czacie. Filtry treści: Opcja filtrowania niepożądanych treści, np.
-      ukrywania obrazów oznaczonych jako wrażliwe lub potencjalnie
-      nieodpowiednie. Możliwość ręcznego oznaczania treści jako wrażliwych lub
-      usunięcia filtru dla wybranych kontaktów. Ustawienia emoji: Możliwość
-      wyboru stylu emoji (np. standardowe, animowane). Opcja automatycznego
-      konwertowania tekstu na emoji, np. „:)” zamieniane na uśmiechniętą buźkę.
-      Rozmiar tekstu w czacie: Suwak lub opcje wyboru rozmiaru tekstu dla
-      wiadomości na czacie. Możliwość włączenia dynamicznego powiększenia tekstu
-      po dłuższym dotknięciu lub kliknięciu (opcjonalnie). Wyświetlanie
-      formatowania tekstu: Opcja wyświetlania tekstu sformatowanego (np.
-      pogrubienie, kursywa, podkreślenie) w wiadomościach. Możliwość wyłączenia
-      formatowania tekstu, jeśli użytkownik woli prostszy, jednolity wygląd.
-      Linki i hiperłącza: Opcja automatycznego wykrywania i podkreślania linków,
-      aby łatwiej było w nie klikać. Możliwość otwierania linków w trybie
-      „podglądu,” aby uniknąć potencjalnych zagrożeń związanych z nieznanymi
-      stronami. Animacje obrazów (GIF-y): Możliwość wyłączenia automatycznego
-      odtwarzania GIF-ów lub ograniczenia ich do kliknięcia. Opcja wyboru, które
-      kontakty mogą wysyłać animacje GIF, aby uniknąć niechcianych animacji w
-      czacie. Przechowywanie obrazów: Opcja automatycznego zapisywania
-      otrzymanych obrazów i multimediów na urządzeniu użytkownika lub w
-      aplikacji. Możliwość wyboru, jak długo multimedia mają być przechowywane
-      (np. do ręcznego usunięcia lub tylko przez 7 dni).
+    <div className="space-y-6 p-6">
+      {/* Wyświetlanie obrazów i multimediów */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">
+          Wyświetlanie obrazów i multimediów
+        </CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>
+            Automatyczne ładowanie obrazów i multimediów
+          </Switch>
+          <Switch defaultSelected>Wyświetlaj podglądy linków w czacie</Switch>
+        </CardBody>
+      </Card>
+
+      {/* Filtry treści */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Filtry treści</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Ukryj wrażliwe treści</Switch>
+          <Select
+            label="Ustawienia filtru dla wybranych kontaktów"
+            className="w-full"
+          >
+            <SelectItem key="allow">Pozwól na wszystkie treści</SelectItem>
+            <SelectItem key="filter">Włącz filtr</SelectItem>
+            <SelectItem key="manual">Ręczne oznaczanie treści</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Ustawienia emoji */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">
+          Ustawienia emoji
+        </CardHeader>
+        <CardBody className="space-y-4">
+          <Select label="Wybierz styl emoji" className="w-full">
+            <SelectItem key="standard">Standardowe</SelectItem>
+            <SelectItem key="animated">Animowane</SelectItem>
+          </Select>
+          <Switch defaultSelected>
+            Automatycznie zamieniaj tekst na emoji
+          </Switch>
+        </CardBody>
+      </Card>
+
+      {/* Rozmiar tekstu w czacie */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">
+          Rozmiar tekstu w czacie
+        </CardHeader>
+        <CardBody className="space-y-4">
+          <Select label="Wybierz rozmiar tekstu" className="w-full">
+            <SelectItem key="small">Mały</SelectItem>
+            <SelectItem key="medium">Średni</SelectItem>
+            <SelectItem key="large">Duży</SelectItem>
+          </Select>
+          <Slider
+            step={1}
+            minValue={12}
+            maxValue={24}
+            defaultValue={16}
+            aria-label="Dostosuj rozmiar tekstu"
+            showTooltip
+            className="max-w-md"
+          />
+          <Switch defaultSelected>
+            Dynamiczne powiększenie tekstu po kliknięciu
+          </Switch>
+        </CardBody>
+      </Card>
+
+      {/* Wyświetlanie formatowania tekstu */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">
+          Wyświetlanie formatowania tekstu
+        </CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Wyświetlaj tekst sformatowany</Switch>
+          <Switch>Wyłącz formatowanie tekstu</Switch>
+        </CardBody>
+      </Card>
+
+      {/* Linki i hiperłącza */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">
+          Linki i hiperłącza
+        </CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>
+            Automatycznie wykrywaj i podkreślaj linki
+          </Switch>
+          <Switch defaultSelected>Otwieraj linki w trybie podglądu</Switch>
+        </CardBody>
+      </Card>
+
+      {/* Animacje obrazów (GIF-y) */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">
+          Animacje obrazów (GIF-y)
+        </CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Odtwarzaj GIF-y automatycznie</Switch>
+          <Select
+            label="Dostosuj możliwość wysyłania GIF-ów"
+            className="w-full"
+          >
+            <SelectItem key="all">Pozwól wszystkim</SelectItem>
+            <SelectItem key="selected">Tylko wybrani użytkownicy</SelectItem>
+            <SelectItem key="none">Nie pozwalaj na GIF-y</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Przechowywanie obrazów */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">
+          Przechowywanie obrazów
+        </CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>
+            Automatycznie zapisuj otrzymane multimedia
+          </Switch>
+          <Select label="Czas przechowywania multimediów" className="w-full">
+            <SelectItem key="manual">Do ręcznego usunięcia</SelectItem>
+            <SelectItem key="7days">Przechowuj przez 7 dni</SelectItem>
+            <SelectItem key="30days">Przechowuj przez 30 dni</SelectItem>
+          </Select>
+        </CardBody>
+      </Card>
+
+      {/* Przycisk zapisu */}
+      <Button color="primary" className="mt-6 w-full md:w-auto self-center">
+        Zapisz ustawienia
+      </Button>
     </div>
   );
-};
+}
 
-export default TextImages;
+export default TextAndImagesSettings;

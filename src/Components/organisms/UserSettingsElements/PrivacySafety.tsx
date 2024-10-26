@@ -1,143 +1,105 @@
 import React from 'react';
-import { Card, CardHeader, CardBody } from '@nextui-org/card';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/dropdown';
-import { Switch } from '@nextui-org/react';
-import { Table, TableHeader, TableBody, TableRow, TableCell, TableColumn } from '@nextui-org/table';
-import { Button, Input } from '@nextui-org/react';
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Switch } from "@nextui-org/switch";
+import { Select, SelectItem } from "@nextui-org/select";
+import { Button, Input } from "@nextui-org/react";
 
-export default function SettingsPrivacy() {
+function PrivacySafetySettings() {
   return (
-    <div className="privacy-settings-container">
-      {/* Profile Visibility Control */}
-      <Card className="mb-6">
-        <CardHeader>
-          <h3>Kontrola Widoczności Profilu</h3>
-        </CardHeader>
-        <CardBody>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button variant="bordered">Kto może zobaczyć profil</Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-title="Widoczność profilu">
-              <DropdownItem key="all">Wszyscy</DropdownItem>
-              <DropdownItem key="friends">Znajomi</DropdownItem>
-              <DropdownItem key="nobody">Nikt</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <div className="flex flex-col mt-4">
-            <Switch title="Ukryj status online" />
-            <Switch title="Ukryj ostatnie logowanie" className="mt-2" />
-            <Switch title="Ukryj lokalizację" className="mt-2" />
+    <div className="space-y-6 p-6">
+      
+      {/* Ustawienia prywatności */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Ustawienia Prywatności</CardHeader>
+        <CardBody className="space-y-4">
+          <Select label="Widoczność profilu" className="w-full">
+            <SelectItem key="everyone">Wszyscy</SelectItem>
+            <SelectItem key="friends">Znajomi</SelectItem>
+            <SelectItem key="nobody">Nikt</SelectItem>
+          </Select>
+          <Switch>Ukryj status online</Switch>
+          <Switch>Ukryj ostatnie logowanie</Switch>
+          <Switch>Ukryj lokalizację</Switch>
+        </CardBody>
+      </Card>
+
+      {/* Blokowanie i zarządzanie użytkownikami */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Blokowanie i Zarządzanie Użytkownikami</CardHeader>
+        <CardBody className="space-y-4">
+          {/* Lista zablokowanych użytkowników */}
+          <div className="space-y-2">
+            <p className="text-md font-medium">Zablokowani użytkownicy:</p>
+            <div className="flex justify-between items-center">
+              <span>Jan Kowalski</span>
+              <Button size="sm" color="danger">Odblokuj</Button>
+            </div>
           </div>
+          <Switch>Wycisz użytkowników (mute)</Switch>
         </CardBody>
       </Card>
 
-      {/* Blocking & User Management */}
-      <Card className="mb-6">
-        <CardHeader>
-          <h3>Blokowanie i Zarządzanie Użytkownikami</h3>
-        </CardHeader>
-        <CardBody>
-          <Table aria-title="Blocked Users">
-            <TableHeader>
-              <TableColumn>Nick</TableColumn>
-              <TableColumn>Akcja</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {/* Replace these rows with dynamic data */}
-              <TableRow key="1">
-                <TableCell>BlockedUser1</TableCell>
-                <TableCell>
-                  <Button variant="flat" size="sm">Usuń blokadę</Button>
-                  <Button variant="flat" size="sm" className="ml-2">Wycisz</Button>
-                </TableCell>
-              </TableRow>
-              <TableRow key="2">
-                <TableCell>BlockedUser2</TableCell>
-                <TableCell>
-                  <Button variant="flat" size="sm">Usuń blokadę</Button>
-                  <Button variant="flat" size="sm" className="ml-2">Wycisz</Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-          <Input placeholder="Dodaj użytkownika do blokady" className="mt-4" />
+      {/* Bezpieczeństwo wiadomości */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Bezpieczeństwo Wiadomości</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch>Filtruj wiadomości od nieznajomych</Switch>
+          <Switch>Ukrywaj obrazy i linki z zewnętrznych źródeł</Switch>
+          <Switch>Ostrzegaj przed otwieraniem nieznanych linków</Switch>
         </CardBody>
       </Card>
 
-      {/* Message Security */}
-      <Card className="mb-6">
-        <CardHeader>
-          <h3>Bezpieczeństwo Wiadomości</h3>
-        </CardHeader>
-        <CardBody>
-          <Switch title="Filtruj wiadomości od nieznajomych" />
-          <Switch title="Ukryj obrazy i linki zewnętrzne" className="mt-2" />
-          <Switch title="Ostrzegaj przed nieznanymi linkami" className="mt-2" />
+      {/* Zarządzanie zaproszeniami */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Zarządzanie Zaproszeniami</CardHeader>
+        <CardBody className="space-y-4">
+          <Select label="Kto może wysyłać zaproszenia" className="w-full">
+            <SelectItem key="everyone">Wszyscy</SelectItem>
+            <SelectItem key="friendsOfFriends">Znajomi znajomych</SelectItem>
+            <SelectItem key="nobody">Nikt</SelectItem>
+          </Select>
+          <Switch>Wyłącz zaproszenia od nieznajomych</Switch>
         </CardBody>
       </Card>
 
-      {/* Invitation Management */}
-      <Card className="mb-6">
-        <CardHeader>
-          <h3>Zarządzanie Zaproszeniami</h3>
-        </CardHeader>
-        <CardBody>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button variant="bordered">Kto może wysyłać zaproszenia</Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-title="Opcje zaproszeń">
-              <DropdownItem key="everyone">Wszyscy</DropdownItem>
-              <DropdownItem key="friendsOfFriends">Tylko znajomi znajomych</DropdownItem>
-              <DropdownItem key="nobody">Nikt</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <Switch title="Wyłącz zaproszenia od nieznajomych" className="mt-4" />
+      {/* Powiadomienia o podejrzanej aktywności */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Powiadomienia o Podejrzanej Aktywności</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Powiadomienia o logowaniu z nieznanych urządzeń</Switch>
+          <Switch>Alert przy zmianie hasła</Switch>
         </CardBody>
       </Card>
 
-      {/* Suspicious Activity Notifications */}
-      <Card className="mb-6">
-        <CardHeader>
-          <h3>Powiadomienia o Podejrzanej Aktywności</h3>
-        </CardHeader>
-        <CardBody>
-          <Switch title="Powiadomienia o nieznanych logowaniach" />
-          <Switch title="Powiadomienia o zmianie hasła" className="mt-2" />
+      {/* Dwuetapowe uwierzytelnianie (2FA) */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Dwuetapowe Uwierzytelnianie (2FA)</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch defaultSelected>Włącz 2FA</Switch>
+          <Select label="Metoda autoryzacji" className="w-full">
+            <SelectItem key="app">Aplikacja mobilna</SelectItem>
+            <SelectItem key="sms">SMS</SelectItem>
+          </Select>
+          <Button color="primary" className="mt-2">Skonfiguruj 2FA</Button>
         </CardBody>
       </Card>
 
-      {/* Two-Factor Authentication */}
-      <Card className="mb-6">
-        <CardHeader>
-          <h3>Dwuetapowe Uwierzytelnianie (2FA)</h3>
-        </CardHeader>
-        <CardBody>
-          <Switch title="Włącz 2FA" />
-          <Dropdown className="mt-4">
-            <DropdownTrigger>
-              <Button variant="bordered">Metoda Autoryzacji</Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-title="Metody 2FA">
-              <DropdownItem key="app">Aplikacja Mobilna</DropdownItem>
-              <DropdownItem key="sms">SMS</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+      {/* Kontrola dostępu do danych */}
+      <Card shadow="sm" className="w-full">
+        <CardHeader className="text-lg font-semibold">Kontrola Dostępu do Danych</CardHeader>
+        <CardBody className="space-y-4">
+          <Switch>Zezwól na zbieranie danych użytkownika</Switch>
+          <Button color="warning" className="w-full">Przejrzyj zgromadzone dane</Button>
+          <Button color="danger" className="w-full">Usuń wszystkie dane użytkownika</Button>
         </CardBody>
       </Card>
 
-      {/* Data Access Control */}
-      <Card>
-        <CardHeader>
-          <h3>Kontrola Dostępu do Danych</h3>
-        </CardHeader>
-        <CardBody>
-          <Switch title="Zezwalaj na zbieranie danych użytkownika" />
-          <Button variant="bordered" className="mt-4">Przeglądaj zgromadzone dane</Button>
-          <Button variant="flat" color="danger" className="mt-2">Usuń zgromadzone dane</Button>
-        </CardBody>
-      </Card>
+      {/* Przycisk zapisu */}
+      <Button color="primary" className="mt-6 w-full md:w-auto self-center">
+        Zapisz ustawienia
+      </Button>
     </div>
   );
 }
+
+export default PrivacySafetySettings;
