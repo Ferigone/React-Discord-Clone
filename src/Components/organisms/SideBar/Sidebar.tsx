@@ -9,6 +9,7 @@ import {
   DropdownSection,
   DropdownItem,
   useDisclosure,
+  Button,
 } from "@nextui-org/react";
 import { FaCog } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
@@ -30,6 +31,7 @@ import {
   selectServerChannels,
 } from "@store/reducers/serverListSlice";
 import ServerSettings from "@organisms/Modals/ServerSettings";
+import UserSettings from "@organisms/Modals/UserSettings";
 
 function Sidebar() {
   const { server_id } = useParams();
@@ -40,7 +42,16 @@ function Sidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isServerSettingsOpen,
+    onOpen: onServerSettingsOpen,
+    onClose: onServerSettingsClose,
+  } = useDisclosure();
+  const {
+    isOpen: isUserSettingsOpen,
+    onOpen: onUserSettingsOpen,
+    onClose: onUserSettingsClose,
+  } = useDisclosure();
 
   const [addChannelModalState, setAddChannelModalState] = useState(false);
 
@@ -94,7 +105,7 @@ function Sidebar() {
               <DropdownItem
                 endContent={<FaCog />}
                 onClick={() => {
-                  onOpen();
+                  onServerSettingsOpen();
                 }}
               >
                 <span className="font-bold m-2">Server settings</span>
@@ -120,7 +131,7 @@ function Sidebar() {
           </DropdownMenu>
         </Dropdown>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto mt-4">
           <div className="px-2 overflow-y-auto flex flex-col-reverse flex-grow scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
             <div className="">
               {channels?.map(
@@ -204,25 +215,28 @@ function Sidebar() {
           </DropdownMenu>
         </Dropdown>
 
-        <ServerSettings isOpen={isOpen} onClose={onClose} />
+        <ServerSettings
+          isOpen={isServerSettingsOpen}
+          onClose={onServerSettingsClose}
+        />
 
         <div className="flex flex-row items-center text-gray-500">
-          <button className="h-8 w-8 flex justify-center items-center hover:bg-gray-700 rounded-md">
+          <Button
+            className="p2 flex justify-center items-center hover:bg-gray-700 rounded-md"
+            isIconOnly 
+            variant="light"
+            onClick={() => {
+              onUserSettingsOpen();
+            }}
+          >
             <RiSettings5Fill
-              className="h-6 w-6 fill-primary-text hover:fill-lighter-hover"
-              onClick={() => {
-                navigate("/app/settings");
-              }}
+              className="h-6 w-6 fill-primary-text"
             />
-          </button>
-          <button className="h-8 w-8 flex justify-center items-center hover:bg-gray-700 rounded-md">
-            <TbLogout
-              className="h-8 w-8 fill-primary-text hover:fill-lighter-hover"
-              onClick={() => {
-                dispatch(logout());
-              }}
-            />
-          </button>
+          </Button>
+          <UserSettings
+            isOpen={isUserSettingsOpen}
+            onClose={onUserSettingsClose}
+          />
         </div>
       </div>
     </div>

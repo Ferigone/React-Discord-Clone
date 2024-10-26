@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
@@ -22,6 +22,7 @@
     "dayjs": "^1.11.13",
     "emoji-picker-react": "^4.12.0",
     "framer-motion": "^11.11.8",
+    "mediasoup-client": "^3.7.17",
     "postcss": "^8.4.47",
     "react": "^18.2.0",
     "react-custom-scrollbars-2": "^4.5.0",
@@ -34,7 +35,8 @@
     "react-toastify": "^10.0.6",
     "react-window": "^1.8.10",
     "socket.io-client": "^4.7.4",
-    "vite-tsconfig-paths": "^4.3.1"
+    "vite-tsconfig-paths": "^4.3.1",
+    "webrtc-adapter": "^9.0.1"
   },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "^2.0.2",

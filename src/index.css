@@ -162,6 +162,10 @@
     animation-duration: 11s;
 }
 
+.modal-max-h {
+    max-height: calc(100vh - 64px);
+}
+
 
 
 @keyframes animate {

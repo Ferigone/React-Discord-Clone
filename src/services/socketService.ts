@@ -60,7 +60,7 @@ class SocketService {
   }
 
   // Emit a socket event
-  emit(event: string, data: any) {
+  emit(event: string, data: any, p0: ({ id }: { id: any; }) => void) {
     if (this.socket) {
       this.socket.emit(event, data);
     }
@@ -76,6 +76,10 @@ class SocketService {
     if (this.socket) {
       this.socket.off(event);
     }
+  }
+
+  get id() {
+    return this.socket?.id;
   }
 
   // Add more socket methods (emitters, listeners) as necessary
