@@ -1,31 +1,40 @@
+import UploadUserFile from "@utils/queries/UploadUserFile";
 import React from "react";
 import { FaCamera, FaPlus } from "react-icons/fa";
 
 interface SelectAvatarProps {
   imageSrc?: string;
-  onSelect?: () => void;
+  onSelect?: (fileUrl) => void;
 }
 
 const SelectAvatar = ({ imageSrc, onSelect }: SelectAvatarProps) => {
   const [image, setImage] = React.useState<string | null>(imageSrc || null);
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      // Upload the file to the backend
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await UploadUserFile(formData);
+        console.log("File uploaded successfully:", response);
+        setImage(response.data.fileUrl); // Set image URL as the avatar
+        if (onSelect) {
+          onSelect(response.data.fileUrl);
+        }
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click(); // Trigger the file input click
-    if (onSelect) {
-      onSelect();
-    }
   };
 
   const handleRemoveImage = () => {
@@ -68,7 +77,6 @@ const SelectAvatar = ({ imageSrc, onSelect }: SelectAvatarProps) => {
         />
       </div>
       <div className="h-8">
-        {/* Remove text */}
         {image && (
           <button
             onClick={handleRemoveImage}

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Modal, ModalContent, useDisclosure, ModalBody, ModalFooter} from "@nextui-org/react";
+import {Modal, ModalContent, useDisclosure, ModalBody, ModalFooter, Image} from "@nextui-org/react";
 
 interface MessageContentProps {
   message: string;
@@ -14,8 +14,6 @@ export const MessageContent: React.FC<MessageContentProps> = ({message}) => {
   const twitchStreamRegex = /(?:https?:\/\/)?(?:www\.)?twitch\.tv\/([a-zA-Z0-9_]+)/gi;
   const twitchClipRegex = /(?:https?:\/\/)?(?:www\.)?clips\.twitch\.tv\/([a-zA-Z0-9_-]+)/gi;
 
-
-
   const handleImageClick = (imageUrl: string) => {
     setSelectedImage(imageUrl);
     onOpen();
@@ -27,7 +25,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({message}) => {
     return parts.map((part, index) => {
       if (imageRegex.test(part)) {
         return (
-            <img
+            <Image
                 key={index}
                 src={part}
                 alt="Embedded content"
@@ -96,7 +94,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({message}) => {
               dangerouslySetInnerHTML={{
                 __html: unescape(part.replace(/\n/g, "<br />")),
               }}
-              className="font-semibold"
+              className=""
           ></span>
       );
     });
@@ -112,7 +110,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({message}) => {
                 {() => (
                     <>
                       <ModalBody className="pt-8">
-                        <img
+                        <Image
                             src={selectedImage}
                             alt="Full-size preview"
                             className="max-w-full max-h-screen object-contain"

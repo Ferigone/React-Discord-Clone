@@ -23,14 +23,21 @@ export const userSlice = createSlice({
         ...state.user || {},
         status: action.payload,
       }
+    },
+    setUserAvatar: (state, action) => {
+      state.user = {
+        ...state.user || {},
+        avatar: action.payload,
+      }
     }
   },
 });
 
-export const { login, logout, setUserData, setUserStatus } = userSlice.actions;
+export const { login, logout, setUserData, setUserStatus, setUserAvatar } = userSlice.actions;
 
 export const selectUser = (state: any) => state.user.user;
 export const selectToken = (state: any) => state.user.token;
 export const selectUserId = (state: any) => state.user.user.id;
+export const selectUserAvatar = (state: any) => state.user.user.avatar;
 
 export default userSlice.reducer;

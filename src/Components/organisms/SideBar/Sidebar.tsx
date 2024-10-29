@@ -32,6 +32,7 @@ import {
 } from "@store/reducers/serverListSlice";
 import ServerSettings from "@organisms/Modals/ServerSettings";
 import UserSettings from "@organisms/Modals/UserSettings";
+import ChannelList from "./ChannelList";
 
 function Sidebar() {
   const { server_id } = useParams();
@@ -131,30 +132,10 @@ function Sidebar() {
           </DropdownMenu>
         </Dropdown>
 
-        <div className="flex-1 overflow-y-auto mt-4">
-          <div className="px-2 overflow-y-auto flex flex-col-reverse flex-grow scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
-            <div className="">
-              {channels?.map(
-                ({
-                  id,
-                  name,
-                  type,
-                }: {
-                  id: string;
-                  name: string;
-                  type: string;
-                }) => (
-                  <SidebarChannel
-                    key={id}
-                    id={id}
-                    channelName={name}
-                    type={type}
-                  />
-                )
-              )}
-            </div>
-          </div>
-        </div>
+        <ChannelList
+          channels={channels}
+        />
+        
         <NewChannelModal
           visible={addChannelModalState}
           setVisible={setAddChannelModalState}
@@ -223,15 +204,13 @@ function Sidebar() {
         <div className="flex flex-row items-center text-gray-500">
           <Button
             className="p2 flex justify-center items-center hover:bg-gray-700 rounded-md"
-            isIconOnly 
+            isIconOnly
             variant="light"
             onClick={() => {
               onUserSettingsOpen();
             }}
           >
-            <RiSettings5Fill
-              className="h-6 w-6 fill-primary-text"
-            />
+            <RiSettings5Fill className="h-6 w-6 fill-primary-text" />
           </Button>
           <UserSettings
             isOpen={isUserSettingsOpen}

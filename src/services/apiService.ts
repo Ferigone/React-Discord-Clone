@@ -51,6 +51,29 @@ const apiService = {
     }
   },
 
+  upload: async (url: string, body: any) => {
+    const token = getCookie("token");
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("API Upload Error:", error);
+      throw error;
+    }
+  }
+
   // Extend for other methods like PUT, DELETE if needed
 };
 

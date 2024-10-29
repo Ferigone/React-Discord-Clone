@@ -28,7 +28,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 
 export default function App({ isOpen, onClose }) {
-  const [selected, setSelected] = React.useState("overview");
+  const [selected, setSelected] = React.useState("profile");
   const dispatch = useDispatch();
 
   const settingsMenu = [

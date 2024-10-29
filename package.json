@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@formkit/auto-animate": "^0.8.2",
     "@nextui-org/modal": "^2.0.41",
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/system": "^2.2.6",
@@ -21,6 +23,7 @@
     "@tanstack/react-query-devtools": "^5.59.15",
     "dayjs": "^1.11.13",
     "emoji-picker-react": "^4.12.0",
+    "filesize": "^10.1.6",
     "framer-motion": "^11.11.8",
     "mediasoup-client": "^3.7.17",
     "postcss": "^8.4.47",
@@ -35,6 +38,7 @@
     "react-toastify": "^10.0.6",
     "react-window": "^1.8.10",
     "socket.io-client": "^4.7.4",
+    "swapy": "^0.4.2",
     "vite-tsconfig-paths": "^4.3.1",
     "webrtc-adapter": "^9.0.1"
   },
