@@ -133,7 +133,7 @@ function SidebarChannel({ id, channelName, type }: SidebarChannelProps) {
         <Link
           to={`/app/server/${server_id}/channel/${id}`}
           className={`${
-            channel_id === id ? "text-white bg-light-hover" : ""
+            channel_id === id ? "text-white bg-light-hover/50" : ""
           } flex flex-row items-center text-primary-text py-1 my-1 rounded-lg hover:bg-light-hover hover:pl-2 duration-100 cursor-pointer`}
         >
           <h5 className="flex items-center mb-1">

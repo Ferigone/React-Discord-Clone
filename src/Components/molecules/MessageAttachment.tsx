@@ -84,7 +84,7 @@ const MessageAttachment = ({ attachment }) => {
             <FaFile size={40} />
           )}
           <div className="flex flex-col mr-2">
-            <p className="text-gray-200">{attachment.filename}</p>
+            <p className="text-gray-200">{attachment.originalFilename}</p>
             <p className="text-light-gray text-xs">
               {filesize(attachment.fileSize)}
             </p>
