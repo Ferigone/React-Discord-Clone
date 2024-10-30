@@ -18,7 +18,7 @@ interface Props {
   visible: boolean;
   title: string | React.ReactNode;
   setVisible: (visible: boolean) => void;
-  addChannel: (name: string) => void;
+  addChannel: (name: string, type: string, isPrivate: boolean) => void;
 }
 
 export const CustomRadio = (props) => {
@@ -67,6 +67,16 @@ const NewChannelModal = ({ visible, title, setVisible, addChannel }: Props) => {
     setChannelType("text");
     setIsPrivate(false);
   };
+
+
+  const handleNameInput = (value) => {
+    if(channelType === "text"){
+      setName(value.replace(/\s/g, "-").toLowerCase());
+    } else {
+      setName(value);
+    }
+  }
+
   return (
     <div>
       <Modal
@@ -101,7 +111,7 @@ const NewChannelModal = ({ visible, title, setVisible, addChannel }: Props) => {
                   <FaMicrophone className="mt-1 mx-2" />
                 )
               }
-              onChange={(e) => setName(e.target.value)}
+              onValueChange={(value) => handleNameInput(value)}
             />
             <Switch
               classNames={{

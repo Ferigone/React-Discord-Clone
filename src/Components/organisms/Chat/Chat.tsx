@@ -190,7 +190,7 @@ const Chat = () => {
                 className="flex flex-col-reverse overflow-y-scroll scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent flex-grow"
                 ref={parent}
               >
-                {messages.map((message, index) => (
+                {messages?.map((message, index) => (
                   <Message
                     key={message.id}
                     id={message.id}
