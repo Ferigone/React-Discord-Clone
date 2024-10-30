@@ -72,7 +72,30 @@ const apiService = {
       console.error("API Upload Error:", error);
       throw error;
     }
-  }
+  },
+
+  delete: async (url: string) => {
+    const token = getCookie("token");
+
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("API DELETE Error:", error);
+      throw error;
+    }
+  },
 
   // Extend for other methods like PUT, DELETE if needed
 };

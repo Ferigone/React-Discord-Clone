@@ -117,6 +117,30 @@ export const serverListSlice = createSlice({
         return server;
       });
     },
+    removeMessage: (
+      state,
+      action: PayloadAction<{
+        channelId: string;
+        messageId: string;
+      }>
+    ) => {
+      return state.map((server) => {
+        return {
+          ...server,
+          channels: server.channels.map((channel) => {
+            if (channel.id === action.payload.channelId) {
+              return {
+                ...channel,
+                messages: channel.messages.filter(
+                  (message) => message.id !== action.payload.messageId
+                ),
+              };
+            }
+            return channel;
+          }),
+        };
+      });
+    },
   },
 });
 
@@ -130,6 +154,7 @@ export const {
   addServerUser,
   setServerUserStatus,
   addNewMessage,
+  removeMessage,
 } = serverListSlice.actions;
 
 export const selectServerById = (serverId: string) => (state) =>
@@ -138,7 +163,7 @@ export const selectServerById = (serverId: string) => (state) =>
 export const selectServerName = (serverId: string) => (state) => {
   const server = state.servers.find((server) => server.id === serverId);
   return server ? server.name : "";
-}
+};
 
 export const selectServerList = (state: { servers: ServerListState }) =>
   state.servers;

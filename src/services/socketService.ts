@@ -2,7 +2,11 @@
 import { io, Socket } from "socket.io-client";
 import store from "@store/store"; // Import the Redux store
 import { setUserStatus } from "@store/reducers/userSlice";
-import { setServerUserStatus, addNewMessage } from "@store/reducers/serverListSlice";
+import {
+  setServerUserStatus,
+  addNewMessage,
+  removeMessage,
+} from "@store/reducers/serverListSlice";
 
 class SocketService {
   private socket: Socket | null = null;
@@ -40,6 +44,11 @@ class SocketService {
       console.log("New message received: ", message);
     });
 
+    // Listener for remove message
+    this.socket.on("messageDeleted", ({ messageId, channelId }) => {
+      store.dispatch(removeMessage({ messageId, channelId })); // Dispatch Redux action to remove message
+    });
+
     // Listener for typing status
     this.socket.on("typing", (data) => {
       //   store.dispatch(setTypingStatus(data)); // Dispatch Redux action for typing status
@@ -51,7 +60,7 @@ class SocketService {
     });
 
     this.socket.on("statusChange", (status) => {
-      if(status.userId === store.getState().user.user.id) {
+      if (status.userId === store.getState().user.user.id) {
         store.dispatch(setUserStatus(status.status));
       }
     });

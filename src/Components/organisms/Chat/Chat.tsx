@@ -193,6 +193,7 @@ const Chat = () => {
                 {messages.map((message, index) => (
                   <Message
                     key={message.id}
+                    id={message.id}
                     timestamp={message.timestamp}
                     user={message.author}
                     message={message.content}

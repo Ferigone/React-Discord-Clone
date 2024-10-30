@@ -1,24 +1,31 @@
-import dayjs from "dayjs";
 import { UserImage } from "@atoms/UserImage";
 import { Username } from "@atoms/Username";
 import { Timestamp } from "@atoms/Timestamp";
 import { MessageContent } from "@atoms/MessageContent";
 import MessageAttachment from "./MessageAttachment";
+import { Button } from "@nextui-org/react";
+import { FaTrash } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { selectUser } from "@store/reducers/userSlice";
+import RemoveMesssage from "@utils/queries/RemoveMessage";
 
 function Message({
+  id,
   user,
   timestamp,
   message,
   attachments,
 }: {
+  id: any;
   user: any;
   timestamp: Date;
   message: string;
   attachments?: any[];
 }) {
-  console.log("Message", user, timestamp, message);
+  const currentUser = useSelector(selectUser);
+
   return (
-    <div className="message flex items-center p-3 px-8 transition-colors duration-250 text-white w-full break-words relative hover:bg-gray-700">
+    <div className="message group relative flex items-center p-3 px-8 transition-colors duration-250 text-white w-full break-words relative hover:bg-gray-700">
       <div className="flex h-full w-[40px]">
         <UserImage
           username={user?.username || "Placeholder"}
@@ -39,6 +46,21 @@ function Message({
           </div>
         )}
       </div>
+
+      {user.id === currentUser.id && (
+        <div className="absolute right-8 hidden group-hover:block">
+          <Button
+            isIconOnly
+            variant="solid"
+            className="bg-transparent hover:bg-transparent rounded-md text-red-500"
+            onClick={async () => {
+              await RemoveMesssage(id);
+            }}
+          >
+            <FaTrash />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
