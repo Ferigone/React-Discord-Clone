@@ -44,7 +44,7 @@ function ServersList() {
 
   return (
     <>
-      <div className="w-[72px] min-w-[72px] bg-primary flex flex-col items-center py-3">
+      <div className="w-[72px] min-w-[72px] bg-primary/50 flex flex-col items-center py-3">
         <div className="mb-2 bg-secondary group hover:bg-blue min-h-[48px] min-w-[48px] flex items-center justify-center rounded-3xl hover:rounded-2xl duration-100 cursor-pointer">
           <SiDiscord className="fill-primary-text group-hover:fill-white h-7 w-7 duration-100" />
         </div>

@@ -4,7 +4,15 @@ import { useParams } from "react-router-dom";
 import { IoMdAddCircle } from "react-icons/io";
 import { AiFillGift, AiOutlineGif } from "react-icons/ai";
 import { MdEmojiEmotions } from "react-icons/md";
-import { Button, Card, Textarea, Tooltip } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Textarea,
+  Tooltip,
+  Image,
+} from "@nextui-org/react";
 import { FaFile, FaFileImage, FaFileLines, FaFilePdf } from "react-icons/fa6";
 import { IoIosClose } from "react-icons/io";
 import { filesize } from "filesize";
@@ -27,6 +35,8 @@ import {
 
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import UploadMessageFile from "@utils/queries/UploadMessageFile";
+
+import { useDropzone } from "react-dropzone";
 
 const Chat = () => {
   const params = useParams();
@@ -124,7 +134,9 @@ const Chat = () => {
         // Update the file status to "uploaded" after successful upload
         setSelectedFiles((prevFiles: any) =>
           prevFiles.map((f) =>
-            f.file === file ? { ...{...f, ...response.data.savedFile}, status: "uploaded" } : f
+            f.file === file
+              ? { ...{ ...f, ...response.data.savedFile }, status: "uploaded" }
+              : f
           )
         );
       } catch (error) {
@@ -179,13 +191,64 @@ const Chat = () => {
 
   const showSendButton = input.trim() || selectedFiles.length > 0;
 
+  const onDrop = useCallback((acceptedFiles) => {
+    const files = acceptedFiles.map((file) => ({
+      file,
+      status: "uploading",
+    }));
+
+    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+    acceptedFiles.forEach(async (file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await UploadMessageFile(formData);
+        console.log("File uploaded successfully:", response);
+
+        setSelectedFiles((prevFiles: any) =>
+          prevFiles.map((f) =>
+            f.file === file
+              ? { ...{ ...f, ...response.data.savedFile }, status: "uploaded" }
+              : f
+          )
+        );
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    });
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   return (
     <>
       {params.channel_id ? (
-        <div className="flex flex-row bg-primary flex-grow max-h-screen">
+        <div className="flex flex-row bg-primary/50 flex-grow max-h-screen">
           <div className="flex flex-col flex-grow min-w-0 min-h-0">
             <ChatHeader channelName={channelName} />
-            <div className="relative flex flex-col min-w-0 min-h-0 flex-grow">
+            <div
+              className="relative flex flex-col min-w-0 min-h-0 flex-grow"
+              {...getRootProps()}
+            >
+              {isDragActive && (
+                <div className="absolute w-full h-full z-50 flex justify-center items-center backdrop-blur shadow-none">
+                  <Card className="py-4 w-[75%] bg-transparent border-dashed border-gray-500 border-1">
+                    <CardBody className="overflow-visible py-2 flex items-center justify-center p-4">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <FaFileLines size={50} className="text-gray-500 mb-8" />
+                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span>{" "}
+                          or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          All files will be uploaded to this channel
+                        </p>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </div>
+              )}
               <div
                 className="flex flex-col-reverse overflow-y-scroll scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent flex-grow"
                 ref={parent}
@@ -205,7 +268,7 @@ const Chat = () => {
                 <div className="mx-1 w-full bg-light-hover rounded-lg">
                   {selectedFiles.length > 0 && (
                     <div
-                      className="mb-2 p-2 rounded-t-lg flex items-center gap-2 flex-wrap "
+                      className="mb-2 p-2 rounded-t-lg flex items-center gap-2 flex-wrap max-h-[100px] overflow-y-auto"
                       ref={animateFiles}
                     >
                       {selectedFiles.map((fileObj, index) => (

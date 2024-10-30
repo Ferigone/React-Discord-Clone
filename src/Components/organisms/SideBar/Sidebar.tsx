@@ -93,7 +93,7 @@ function Sidebar() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col bg-primary min-w-[240px] w-[240px] mx-2 rounded-b-2xl h-full">
+      <div className="flex flex-col bg-primary/50 min-w-[240px] w-[240px] mx-2 rounded-b-2xl h-full">
         <Dropdown>
           <DropdownTrigger>
             <div className="flex flex-row justify-between items-center px-5 h-[55px] text-white border-b border-black cursor-pointer duration-100">
@@ -132,10 +132,8 @@ function Sidebar() {
           </DropdownMenu>
         </Dropdown>
 
-        <ChannelList
-          channels={channels}
-        />
-        
+        <ChannelList channels={channels} />
+
         <NewChannelModal
           visible={addChannelModalState}
           setVisible={setAddChannelModalState}
@@ -143,7 +141,7 @@ function Sidebar() {
           addChannel={handleAddChannel}
         />
       </div>
-      <div className="h-[75px] flex flex-row items-center justify-between px-2 bg-primary rounded-t-2xl mx-2 mt-2">
+      <div className="h-[75px] flex flex-row items-center justify-between px-2 bg-primary/50 rounded-t-2xl mx-2 mt-2">
         <Dropdown>
           <DropdownTrigger>
             <div>

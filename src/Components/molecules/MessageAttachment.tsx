@@ -52,7 +52,7 @@ const MessageAttachment = ({ attachment }) => {
                       <Image
                         src={selectedImage}
                         alt="Full-size preview"
-                        className="max-w-full max-h-screen object-contain rounded-none"
+                        className="max-h-screen object-contain rounded-none"
                       />
                     </ModalBody>
                     <ModalFooter className="pt-0 flex justify-start pl-7">
