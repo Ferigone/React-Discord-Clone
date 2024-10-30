@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "@store/reducers/userSlice";
 import RemoveMesssage from "@utils/queries/RemoveMessage";
 import { BsThreeDots } from "react-icons/bs";
+import { FaRegEdit } from "react-icons/fa";
 
 function Message({
   id,
@@ -55,21 +56,13 @@ function Message({
       </div>
 
       {user.id === currentUser.id && (
-        <div className="absolute top-2 right-2 hidden group-hover:block">
-          {/* <Button
-            isIconOnly
-            variant="solid"
-            className=" rounded-md text-red-500"
-            onClick={async () => {
-              await RemoveMesssage(id);
-            }}
-          >
-            <FaTrash />
-          </Button> */}
-
+        <div className="absolute top-2 right-8 hidden group-hover:block">
           <Dropdown placement="top-end">
             <DropdownTrigger>
-              <Button variant="solid" className="bg-transparent hover:bg-transparent">
+              <Button
+                variant="solid"
+                className="bg-transparent hover:bg-transparent"
+              >
                 <BsThreeDots size={20} className="text-gray-200" />
               </Button>
             </DropdownTrigger>
@@ -77,12 +70,12 @@ function Message({
               variant="flat"
               aria-label="Dropdown menu with shortcut"
             >
-              <DropdownItem key="edit" shortcut="⌘⇧E" isDisabled>
+              <DropdownItem key="edit" startContent={<FaRegEdit />} isDisabled>
                 Edit message
               </DropdownItem>
               <DropdownItem
                 key="delete"
-                shortcut="⌘⇧D"
+                startContent={<FaTrash />}
                 className="text-danger"
                 color="danger"
                 onClick={async () => {

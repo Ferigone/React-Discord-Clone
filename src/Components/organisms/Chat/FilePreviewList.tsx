@@ -36,9 +36,9 @@ const FilePreviewList: React.FC<FilePreviewListProps> = ({
       {selectedFiles.map((fileObj, index) => (
         <Card
           key={index}
-          className={`flex flex-row gap-2 p-4 items-center relative ${
+          className={`flex flex-row rounded-lg gap-2 p-4 items-center relative ${
             fileObj.status === "uploading" ? "opacity-50" : "opacity-100"
-          } bg-primary`}
+          } bg-light-hover/25`}
         >
           {mapFileTypeToIcon(fileObj.file.type)}
           <div className="flex flex-col mr-2">

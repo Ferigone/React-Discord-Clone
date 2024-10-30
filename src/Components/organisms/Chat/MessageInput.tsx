@@ -71,7 +71,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
   return (
     <div className="text-gray-400 flex justify-between p-1.5 rounded-md mx-5 mb-5">
-      <div className="mx-1 w-full bg-light-hover rounded-lg">
+      <div className="mx-1 w-full bg-light-hover/25 rounded-lg">
         {selectedFiles.length > 0 && (
           <FilePreviewList
             selectedFiles={selectedFiles}
@@ -87,10 +87,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
           className=""
           classNames={{
             innerWrapper: "flex justify-center items-center",
-            inputWrapper: `bg-light-hover hover:bg-light-hover rounded-b-lg ${
+            inputWrapper: `bg-light-hover/50 hover:bg-light-hover/50 rounded-b-lg ${
               selectedFiles.length === 0 ? "rounded-t-lg" : "rounded-t-none"
             }`,
-            input: "font-semibold bg-light-hover",
+            input: "font-semibold bg-light-hover/50",
           }}
           startContent={
             <Button isIconOnly variant="light" onClick={handleAddFile}>
