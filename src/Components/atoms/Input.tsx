@@ -1,15 +1,8 @@
 import React from "react";
 import { Input } from "@nextui-org/react";
 
-interface InputProps {
-  id: string;
-  onChange: (e: string) => void;
-  error?: boolean;
-  errorMessage?: string;
-  label?: any;
-}
 
-export const InputComponent: React.FC<InputProps> = ({
+export const InputComponent: React.FC<any> = ({
   onChange,
   error,
   errorMessage,
