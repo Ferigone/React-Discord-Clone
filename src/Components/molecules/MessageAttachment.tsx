@@ -44,6 +44,7 @@ const MessageAttachment = ({ attachment }) => {
               onOpenChange={onClose}
               backdrop="blur"
               className="bg-transparent shadow-none"
+              size="5xl"
             >
               <ModalContent>
                 {() => (

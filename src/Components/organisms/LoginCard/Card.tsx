@@ -1,7 +1,7 @@
 import React, { FormEventHandler } from "react";
 import { Header } from "@atoms/Header";
 import { Label } from "@atoms/Label";
-import { Input } from "@atoms/Input";
+import { InputComponent } from "@atoms/Input";
 import { Link } from "@atoms/Link";
 import { Button } from "@atoms/Button";
 import { FooterText } from "@atoms/FooterText";
@@ -19,9 +19,9 @@ const Card: React.FC<CardProps> = ({ onSubmit, isLoading }) => {
         <Label htmlFor="email" required>
           ADRES E-MAIL
         </Label>
-        <Input type="text" id="email" required />
+        <InputComponent type="text" id="email" required />
         <Label htmlFor="password">HASŁO</Label>
-        <Input type="password" id="password" required />
+        <InputComponent type="password" id="password" required />
         <Link href="">Nie pamiętasz hasła?</Link>
         <Button isLoading={isLoading}>Zaloguj się</Button>
         <FooterText />
